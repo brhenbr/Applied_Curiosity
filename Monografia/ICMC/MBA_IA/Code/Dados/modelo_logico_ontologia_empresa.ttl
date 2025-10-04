@@ -1,0 +1,519 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ns: <http://www.exemplo.com/ontologia/mochilas_voadoras#> .
+
+ns:OntologiaMochilasVoadoras a owl:Ontology ;
+    rdfs:comment "Ontologia simulada e inferida para o modelo lógico de uma empresa B2B de produtos de aventura (mochilas voadoras), baseada nos domínios de negócio (Bounded Contexts do DDD), propriedades de dados completas e vocabulário de negócio inferido." ;
+    owl:versionIRI <http://www.exemplo.com/ontologia/mochilas_voadoras/1.1> .
+
+# Conceitos (Classes) baseados em Domínios de Negócio (Bounded Contexts)
+ns:ClienteContext a owl:Class ;
+    rdfs:label "Contexto do Cliente" ;
+    rdfs:comment "Representa entidades e conceitos relacionados ao cliente no domínio B2B (concessionárias)." .
+
+ns:ProdutoContext a owl:Class ;
+    rdfs:label "Contexto do Produto" ;
+    rdfs:comment "Representa entidades e conceitos relacionados aos produtos da empresa, incluindo sua categorização." .
+
+ns:VendasContext a owl:Class ;
+    rdfs:label "Contexto de Vendas" ;
+    rdfs:comment "Representa entidades e conceitos relacionados aos processos de vendas, pedidos e itens de pedido." .
+
+ns:ProducaoContext a owl:Class ;
+    rdfs:label "Contexto de Produção" ;
+    rdfs:comment "Representa entidades e conceitos relacionados à fabricação, matérias-primas e fornecedores." .
+
+ns:CadeiaLogisticaContext a owl:Class ;
+    rdfs:label "Contexto da Cadeia Logística" ;
+    rdfs:comment "Representa entidades e conceitos relacionados ao estoque, armazéns, envios e recebimento de matérias-primas." .
+
+ns:RecursosHumanosContext a owl:Class ;
+    rdfs:label "Contexto de Recursos Humanos" ;
+    rdfs:comment "Representa entidades e conceitos relacionados aos funcionários, cargos e departamentos da empresa." .
+
+ns:FinancasContext a owl:Class ;
+    rdfs:label "Contexto de Finanças" ;
+    rdfs:comment "Representa entidades e conceitos relacionados a transações financeiras, contabilidade e centros de custo." .
+
+ns:TecnologiaInformacaoContext a owl:Class ;
+    rdfs:label "Contexto de Tecnologia da Informação" ;
+    rdfs:comment "Representa entidades e conceitos relacionados a projetos e tarefas de TI." .
+
+# Entidades (Classes) do Modelo Lógico e suas associações a Bounded Contexts
+# Cliente
+ns:Cliente rdfs:subClassOf ns:ClienteContext ;
+    rdfs:label "Cliente" ;
+    rdfs:label "Concessionária" ; # Vocabulário de Negócio: sinônimo
+    rdfs:label "Revendedor" ;    # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Representa uma entidade cliente, geralmente uma empresa (B2B) que compra produtos para revenda." .
+ns:EnderecoCliente rdfs:subClassOf ns:ClienteContext ;
+    rdfs:label "Endereço do Cliente" ;
+    rdfs:comment "Endereço físico associado a um cliente." .
+
+# Produto
+ns:Produto rdfs:subClassOf ns:ProdutoContext ;
+    rdfs:label "Produto" ;
+    rdfs:label "Mercadoria" ; # Vocabulário de Negócio: sinônimo
+    rdfs:label "Item de Venda" ; # Vocabulário de Negócio: sinônimo
+    rdfs:label "SKU" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Representa um item físico ou serviço oferecido para venda pela empresa." .
+ns:CategoriaProduto rdfs:subClassOf ns:ProdutoContext ;
+    rdfs:label "Categoria de Produto" ;
+    rdfs:comment "Classificação hierárquica para organizar produtos." .
+# Hierarquias de Produto (Inferidas)
+ns:Veiculo a owl:Class ;
+    rdfs:subClassOf ns:Produto ;
+    rdfs:label "Veículo" ;
+    rdfs:comment "Subclasse de Produto representando veículos." .
+ns:Quadriciclo a owl:Class ;
+    rdfs:subClassOf ns:Veiculo ;
+    rdfs:label "Quadriciclo" ;
+    rdfs:comment "Tipo específico de veículo." .
+ns:BikeMontanha a owl:Class ;
+    rdfs:subClassOf ns:Veiculo ;
+    rdfs:label "Bike para Montanha" ;
+    rdfs:comment "Tipo específico de bicicleta para uso em montanha." .
+ns:EquipamentoVoador a owl:Class ;
+    rdfs:subClassOf ns:Produto ;
+    rdfs:label "Equipamento Voador" ;
+    rdfs:comment "Subclasse de Produto representando equipamentos capazes de voar." .
+ns:MochilaVoadora a owl:Class ;
+    rdfs:subClassOf ns:EquipamentoVoador ;
+    rdfs:label "Mochila Voadora" ;
+    rdfs:comment "Tipo específico de equipamento voador." .
+
+# Vendas
+ns:Pedido rdfs:subClassOf ns:VendasContext ;
+    rdfs:label "Pedido" ;
+    rdfs:label "Ordem de Venda" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Representa a solicitação de compra de produtos por um cliente." .
+ns:ItemPedido rdfs:subClassOf ns:VendasContext ;
+    rdfs:label "Item de Pedido" ;
+    rdfs:comment "Representa um produto específico dentro de um pedido, com sua quantidade e preço." .
+
+# Produção
+ns:Fornecedor rdfs:subClassOf ns:ProducaoContext ;
+    rdfs:label "Fornecedor" ;
+    rdfs:label "Provedor" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Entidade que fornece matérias-primas ou serviços à empresa." .
+ns:MateriaPrima rdfs:subClassOf ns:ProducaoContext ;
+    rdfs:label "Matéria-Prima" ;
+    rdfs:label "Insumo" ; # Vocabulário de Negócio: sinônimo
+    rdfs:label "Componente" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Material bruto ou componente utilizado na fabricação de produtos." .
+# Hierarquias de Matéria-Prima (Inferidas)
+ns:Peca a owl:Class ;
+    rdfs:subClassOf ns:MateriaPrima ;
+    rdfs:label "Peça" ;
+    rdfs:comment "Subclasse de Matéria-Prima representando peças mecânicas ou eletrônicas." .
+ns:EquipamentoFabricacao a owl:Class ;
+    rdfs:subClassOf ns:MateriaPrima ;
+    rdfs:label "Equipamento para Fabricação" ;
+    rdfs:comment "Subclasse de Matéria-Prima representando equipamentos utilizados no processo produtivo." .
+
+ns:ReceitaProduto rdfs:subClassOf ns:ProducaoContext ;
+    rdfs:label "Receita de Produto" ;
+    rdfs:comment "Documento que detalha os materiais e passos para fabricar um produto." .
+ns:ItemReceita rdfs:subClassOf ns:ProducaoContext ;
+    rdfs:label "Item de Receita" ;
+    rdfs:comment "Um componente específico ou matéria-prima dentro de uma receita de produto." .
+ns:ProducaoOrdem rdfs:subClassOf ns:ProducaoContext ;
+    rdfs:label "Ordem de Produção" ;
+    rdfs:label "Ordem de Fabricação" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Instrução para fabricar uma certa quantidade de um produto." .
+
+# Cadeia Logística
+ns:Estoque rdfs:subClassOf ns:CadeiaLogisticaContext ;
+    rdfs:label "Estoque" ;
+    rdfs:label "Inventário" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Representa a quantidade de produtos ou matérias-primas disponíveis em um local de armazenamento." .
+ns:Armazem rdfs:subClassOf ns:CadeiaLogisticaContext ;
+    rdfs:label "Armazém" ;
+    rdfs:label "Centro de Distribuição" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Local físico para armazenamento de produtos e matérias-primas." .
+ns:RotaEntrega rdfs:subClassOf ns:CadeiaLogisticaContext ;
+    rdfs:label "Rota de Entrega" ;
+    rdfs:comment "Caminho predefinido ou dinâmico para o transporte de mercadorias." .
+ns:Envio rdfs:subClassOf ns:CadeiaLogisticaContext ;
+    rdfs:label "Envio" ;
+    rdfs:label "Expedição" ; # Vocabulário de Negócio: sinônimo
+    rdfs:label "Logística de Saída" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Registro da movimentação de produtos para fora do armazém, em direção ao cliente." .
+ns:RecebimentoMateriaPrima rdfs:subClassOf ns:CadeiaLogisticaContext ;
+    rdfs:label "Recebimento de Matéria-Prima" ;
+    rdfs:label "Logística de Entrada" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Registro da entrada de matérias-primas ou componentes na empresa." .
+
+# RH
+ns:Funcionario rdfs:subClassOf ns:RecursosHumanosContext ;
+    rdfs:label "Funcionário" ;
+    rdfs:label "Colaborador" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Pessoa empregada pela empresa." .
+ns:Cargo rdfs:subClassOf ns:RecursosHumanosContext ;
+    rdfs:label "Cargo" ;
+    rdfs:comment "Posição ou função ocupada por um funcionário na empresa." .
+ns:FuncionarioCargo rdfs:subClassOf ns:RecursosHumanosContext ;
+    rdfs:label "Associação Funcionário-Cargo" ;
+    rdfs:comment "Associação entre um funcionário e seu cargo." .
+ns:Departamento rdfs:subClassOf ns:RecursosHumanosContext ;
+    rdfs:label "Departamento" ;
+    rdfs:label "Área de Negócio" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Unidade organizacional da empresa." .
+# Hierarquias de Departamento (Inferidas)
+ns:DepartamentoVendas a owl:Class ; rdfs:subClassOf ns:Departamento ; rdfs:label "Departamento de Vendas" .
+ns:DepartamentoMarketing a owl:Class ; rdfs:subClassOf ns:Departamento ; rdfs:label "Departamento de Marketing" .
+ns:DepartamentoRH a owl:Class ; rdfs:subClassOf ns:Departamento ; rdfs:label "Departamento de Recursos Humanos" .
+ns:DepartamentoTI a owl:Class ; rdfs:subClassOf ns:Departamento ; rdfs:label "Departamento de Tecnologia da Informação" .
+ns:DepartamentoFinancas a owl:Class ; rdfs:subClassOf ns:Departamento ; rdfs:label "Departamento de Finanças" .
+ns:DepartamentoProducao a owl:Class ; rdfs:subClassOf ns:Departamento ; rdfs:label "Departamento de Produção" .
+ns:DepartamentoLogistica a owl:Class ; rdfs:subClassOf ns:Departamento ; rdfs:label "Departamento de Logística" .
+
+# Finanças
+ns:FaturaVenda rdfs:subClassOf ns:FinancasContext ;
+    rdfs:label "Fatura de Venda" ;
+    rdfs:label "Nota Fiscal de Venda" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Documento contábil que registra uma transação de venda e o valor devido." .
+ns:ContaContabil rdfs:subClassOf ns:FinancasContext ;
+    rdfs:label "Conta Contábil" ;
+    rdfs:label "Conta do Plano de Contas" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Classificação contábil de transações financeiras." .
+ns:LancamentoContabil rdfs:subClassOf ns:FinancasContext ;
+    rdfs:label "Lançamento Contábil" ;
+    rdfs:label "Registro Contábil" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Registro de uma transação financeira em uma conta contábil." .
+ns:CentroCusto rdfs:subClassOf ns:FinancasContext ;
+    rdfs:label "Centro de Custo" ;
+    rdfs:comment "Unidade organizacional para rastreamento de despesas." .
+ns:LancamentoContabilCC rdfs:subClassOf ns:FinancasContext ;
+    rdfs:label "Associação Lançamento-Centro de Custo" ;
+    rdfs:comment "Associação entre um lançamento contábil e seu centro de custo relacionado." .
+ns:PagamentoFornecedor rdfs:subClassOf ns:FinancasContext ;
+    rdfs:label "Pagamento a Fornecedor" ;
+    rdfs:comment "Registro de um pagamento feito a um fornecedor." .
+
+# TI
+ns:ProjetoTI rdfs:subClassOf ns:TecnologiaInformacaoContext ;
+    rdfs:label "Projeto de TI" ;
+    rdfs:label "Iniciativa de Tecnologia" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Projeto de desenvolvimento ou manutenção na área de Tecnologia da Informação." .
+ns:TarefaTI rdfs:subClassOf ns:TecnologiaInformacaoContext ;
+    rdfs:label "Tarefa de TI" ;
+    rdfs:label "Chamado de TI" ; # Vocabulário de Negócio: sinônimo
+    rdfs:comment "Atividade específica dentro de um projeto de TI ou de suporte." .
+
+# Propriedades de Objeto (Relações entre Classes) - inferidas de FKs e semântica de negócio
+ns:possuiEndereco a owl:ObjectProperty ; rdfs:label "possui endereço" ;
+    rdfs:domain ns:Cliente ; rdfs:range ns:EnderecoCliente .
+
+ns:pertenceACategoria a owl:ObjectProperty ; rdfs:label "pertence à categoria" ;
+    rdfs:domain ns:Produto ; rdfs:range ns:CategoriaProduto .
+
+ns:realizaPedido a owl:ObjectProperty ; rdfs:label "realiza pedido" ;
+    rdfs:domain ns:Cliente ; rdfs:range ns:Pedido .
+
+ns:contemItem a owl:ObjectProperty ; rdfs:label "contém item" ;
+    rdfs:domain ns:Pedido ; rdfs:range ns:ItemPedido .
+
+ns:refereProduto a owl:ObjectProperty ; rdfs:label "refere-se ao produto" ;
+    rdfs:domain ns:ItemPedido ; rdfs:range ns:Produto .
+
+ns:temEstoque a owl:ObjectProperty ; rdfs:label "tem estoque" ;
+    rdfs:domain ns:Produto ; rdfs:range ns:Estoque .
+
+ns:localizadoEmArmazem a owl:ObjectProperty ; rdfs:label "localizado em armazém" ;
+    rdfs:domain ns:Estoque ; rdfs:range ns:Armazem .
+
+ns:usaFornecedor a owl:ObjectProperty ; rdfs:label "usa fornecedor" ;
+    rdfs:domain ns:RecebimentoMateriaPrima ; rdfs:range ns:Fornecedor .
+
+ns:recebeMateriaPrima a owl:ObjectProperty ; rdfs:label "recebe matéria-prima" ;
+    rdfs:domain ns:RecebimentoMateriaPrima ; rdfs:range ns:MateriaPrima .
+
+ns:produzProduto a owl:ObjectProperty ; rdfs:label "produz produto" ;
+    rdfs:domain ns:ReceitaProduto ; rdfs:range ns:Produto .
+
+ns:requerMateriaPrima a owl:ObjectProperty ; rdfs:label "requer matéria-prima" ;
+    rdfs:domain ns:ItemReceita ; rdfs:range ns:MateriaPrima .
+
+ns:fazParteDaReceita a owl:ObjectProperty ; rdfs:label "faz parte da receita" ;
+    rdfs:domain ns:ItemReceita ; rdfs:range ns:ReceitaProduto .
+
+ns:baseadoEmReceita a owl:ObjectProperty ; rdfs:label "baseado em receita" ;
+    rdfs:domain ns:ProducaoOrdem ; rdfs:range ns:ReceitaProduto .
+
+ns:associadoAProdutoProduzido a owl:ObjectProperty ; rdfs:label "associado ao produto produzido" ;
+    rdfs:domain ns:ProducaoOrdem ; rdfs:range ns:Produto .
+
+ns:atuaEmCargo a owl:ObjectProperty ; rdfs:label "atua em cargo" ;
+    rdfs:domain ns:FuncionarioCargo ; rdfs:range ns:Cargo .
+
+ns:associadoAFuncionario a owl:ObjectProperty ; rdfs:label "associado a funcionário" ;
+    rdfs:domain ns:FuncionarioCargo ; rdfs:range ns:Funcionario .
+
+ns:geradaParaPedido a owl:ObjectProperty ; rdfs:label "gerada para pedido" ;
+    rdfs:domain ns:FaturaVenda ; rdfs:range ns:Pedido .
+
+ns:associadoAContaContabil a owl:ObjectProperty ; rdfs:label "associado a conta contábil" ;
+    rdfs:domain ns:LancamentoContabil ; rdfs:range ns:ContaContabil .
+
+ns:associadoACentroCusto a owl:ObjectProperty ; rdfs:label "associado a centro de custo" ;
+    rdfs:domain ns:LancamentoContabilCC ; rdfs:range ns:CentroCusto .
+ns:relacionadoALancamento a owl:ObjectProperty ; rdfs:label "relacionado a lançamento" ;
+    rdfs:domain ns:LancamentoContabilCC ; rdfs:range ns:LancamentoContabil .
+
+ns:pagaFornecedor a owl:ObjectProperty ; rdfs:label "paga fornecedor" ;
+    rdfs:domain ns:PagamentoFornecedor ; rdfs:range ns:Fornecedor .
+
+ns:pertenceAProjeto a owl:ObjectProperty ; rdfs:label "pertence a projeto" ;
+    rdfs:domain ns:TarefaTI ; rdfs:range ns:ProjetoTI .
+
+ns:designadoParaFuncionario a owl:ObjectProperty ; rdfs:label "designado para funcionário" ;
+    rdfs:domain ns:TarefaTI ; rdfs:range ns:Funcionario .
+
+ns:enviadoParaPedido a owl:ObjectProperty ; rdfs:label "enviado para pedido" ;
+    rdfs:domain ns:Envio ; rdfs:range ns:Pedido .
+
+ns:utilizaRota a owl:ObjectProperty ; rdfs:label "utiliza rota" ;
+    rdfs:domain ns:Envio ; rdfs:range ns:RotaEntrega .
+
+ns:realizaProducaoDe a owl:ObjectProperty ; rdfs:label "realiza produção de" ;
+    rdfs:domain ns:ProducaoOrdem ; rdfs:range ns:Produto .
+
+
+# Axiomas e Restrições Básicas (Inferidas)
+ns:Pedido rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty ns:contemItem ;
+    owl:minQualifiedCardinality 1 ;
+    owl:onClass ns:ItemPedido
+] ;
+rdfs:comment "Todo Pedido deve conter pelo menos um Item de Pedido." .
+
+ns:ItemPedido rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty ns:refereProduto ;
+    owl:qualifiedCardinality 1 ;
+    owl:onClass ns:Produto
+] ;
+rdfs:comment "Cada Item de Pedido deve referir-se a exatamente um Produto." .
+
+ns:ItemReceita rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty ns:requerMateriaPrima ;
+    owl:qualifiedCardinality 1 ;
+    owl:onClass ns:MateriaPrima
+] ;
+rdfs:comment "Cada Item de Receita deve requerer exatamente uma Matéria-Prima." .
+
+ns:ProducaoOrdem rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty ns:associadoAProdutoProduzido ;
+    owl:qualifiedCardinality 1 ;
+    owl:onClass ns:Produto
+] ;
+rdfs:comment "Toda Ordem de Produção é associada a exatamente um Produto a ser produzido." .
+
+ns:FaturaVenda rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty ns:geradaParaPedido ;
+    owl:qualifiedCardinality 1 ;
+    owl:onClass ns:Pedido
+] ;
+rdfs:comment "Toda Fatura de Venda é gerada para exatamente um Pedido." .
+
+ns:RecebimentoMateriaPrima rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty ns:usaFornecedor ;
+    owl:qualifiedCardinality 1 ;
+    owl:onClass ns:Fornecedor
+] ;
+rdfs:comment "Todo Recebimento de Matéria-Prima usa exatamente um Fornecedor." .
+
+# Propriedades de Dados (DatatypeProperties) - COMPLETAS
+# Cliente
+ns:idCliente a owl:DatatypeProperty ; rdfs:domain ns:Cliente ; rdfs:range xsd:integer ; rdfs:label "identificador do cliente" ; rdfs:comment "Identificador único do cliente." .
+ns:nomeCliente a owl:DatatypeProperty ; rdfs:domain ns:Cliente ; rdfs:range xsd:string ; rdfs:label "nome do cliente" ; rdfs:comment "Nome completo do cliente." .
+ns:emailCliente a owl:DatatypeProperty ; rdfs:domain ns:Cliente ; rdfs:range xsd:string ; rdfs:label "email do cliente" ; rdfs:comment "Endereço de e-mail do cliente (único)." .
+ns:dataCadastro a owl:DatatypeProperty ; rdfs:domain ns:Cliente ; rdfs:range xsd:date ; rdfs:label "data de cadastro" ; rdfs:comment "Data em que o cliente foi cadastrado." .
+
+# Endereco_Cliente
+ns:idEndereco a owl:DatatypeProperty ; rdfs:domain ns:EnderecoCliente ; rdfs:range xsd:integer ; rdfs:label "identificador do endereço" ; rdfs:comment "Identificador único do endereço." .
+ns:logradouro a owl:DatatypeProperty ; rdfs:domain ns:EnderecoCliente ; rdfs:range xsd:string ; rdfs:label "logradouro" ; rdfs:comment "Rua, avenida, etc." .
+ns:numero a owl:DatatypeProperty ; rdfs:domain ns:EnderecoCliente ; rdfs:range xsd:string ; rdfs:label "número" ; rdfs:comment "Número do endereço." .
+ns:complemento a owl:DatatypeProperty ; rdfs:domain ns:EnderecoCliente ; rdfs:range xsd:string ; rdfs:label "complemento" ; rdfs:comment "Complemento do endereço." .
+ns:bairro a owl:DatatypeProperty ; rdfs:domain ns:EnderecoCliente ; rdfs:range xsd:string ; rdfs:label "bairro" ; rdfs:comment "Bairro do endereço." .
+ns:cidade a owl:DatatypeProperty ; rdfs:domain ns:EnderecoCliente ; rdfs:range xsd:string ; rdfs:label "cidade" ; rdfs:comment "Cidade do endereço." .
+ns:estado a owl:DatatypeProperty ; rdfs:domain ns:EnderecoCliente ; rdfs:range xsd:string ; rdfs:label "estado" ; rdfs:comment "Estado do endereço." .
+ns:cep a owl:DatatypeProperty ; rdfs:domain ns:EnderecoCliente ; rdfs:range xsd:string ; rdfs:label "CEP" ; rdfs:comment "Código de Endereçamento Postal." .
+
+# Produto
+ns:idProduto a owl:DatatypeProperty ; rdfs:domain ns:Produto ; rdfs:range xsd:integer ; rdfs:label "identificador do produto" ; rdfs:comment "Identificador único do produto (e.g., quadriciclo, mochila voadora)." .
+ns:nomeProduto a owl:DatatypeProperty ; rdfs:domain ns:Produto ; rdfs:range xsd:string ; rdfs:label "nome do produto" ; rdfs:comment "Nome comercial do produto." .
+ns:descricaoProduto a owl:DatatypeProperty ; rdfs:domain ns:Produto ; rdfs:range xsd:string ; rdfs:label "descrição do produto" ; rdfs:comment "Descrição detalhada do produto." .
+ns:precoUnitarioVenda a owl:DatatypeProperty ; rdfs:domain ns:Produto ; rdfs:range xsd:decimal ; rdfs:label "preço unitário de venda" ; rdfs:comment "Preço de venda unitário do produto." .
+
+# Categoria_Produto
+ns:idCategoriaProduto a owl:DatatypeProperty ; rdfs:domain ns:CategoriaProduto ; rdfs:range xsd:integer ; rdfs:label "identificador da categoria de produto" ; rdfs:comment "Identificador único da categoria de produto." .
+ns:nomeCategoria a owl:DatatypeProperty ; rdfs:domain ns:CategoriaProduto ; rdfs:range xsd:string ; rdfs:label "nome da categoria" ; rdfs:comment "Nome da categoria (e.g., Veículos, Acessórios, Equipamentos Voadores)." .
+
+# Pedido
+ns:idPedido a owl:DatatypeProperty ; rdfs:domain ns:Pedido ; rdfs:range xsd:integer ; rdfs:label "identificador do pedido" ; rdfs:comment "Identificador único do pedido de venda." .
+ns:dataPedido a owl:DatatypeProperty ; rdfs:domain ns:Pedido ; rdfs:range xsd:dateTime ; rdfs:label "data do pedido" ; rdfs:comment "Data e hora em que o pedido foi feito." .
+ns:statusPedido a owl:DatatypeProperty ; rdfs:domain ns:Pedido ; rdfs:range xsd:string ; rdfs:label "status do pedido" ; rdfs:comment "Status atual do pedido (e.g., 'Pendente', 'Em Processamento', 'Enviado', 'Entregue')." .
+
+# Item_Pedido
+ns:idItemPedido a owl:DatatypeProperty ; rdfs:domain ns:ItemPedido ; rdfs:range xsd:integer ; rdfs:label "identificador do item do pedido" ; rdfs:comment "Identificador único do item dentro de um pedido." .
+ns:quantidadeItemPedido a owl:DatatypeProperty ; rdfs:domain ns:ItemPedido ; rdfs:range xsd:integer ; rdfs:label "quantidade do item do pedido" ; rdfs:comment "Quantidade do produto no item do pedido." .
+ns:precoVendaItemPedido a owl:DatatypeProperty ; rdfs:domain ns:ItemPedido ; rdfs:range xsd:decimal ; rdfs:label "preço de venda do item do pedido" ; rdfs:comment "Preço pelo qual o produto foi vendido no pedido." .
+
+# Estoque
+ns:idEstoque a owl:DatatypeProperty ; rdfs:domain ns:Estoque ; rdfs:range xsd:integer ; rdfs:label "identificador do estoque" ; rdfs:comment "Identificador único do registro de estoque." .
+ns:quantidadeDisponivel a owl:DatatypeProperty ; rdfs:domain ns:Estoque ; rdfs:range xsd:integer ; rdfs:label "quantidade disponível" ; rdfs:comment "Quantidade de produtos disponível em estoque." .
+ns:localArmazenamento a owl:DatatypeProperty ; rdfs:domain ns:Estoque ; rdfs:range xsd:string ; rdfs:label "local de armazenamento" ; rdfs:comment "Local físico onde o produto está armazenado." .
+
+# Armazem
+ns:idArmazem a owl:DatatypeProperty ; rdfs:domain ns:Armazem ; rdfs:range xsd:integer ; rdfs:label "identificador do armazém" ; rdfs:comment "Identificador único do armazém." .
+ns:nomeArmazem a owl:DatatypeProperty ; rdfs:domain ns:Armazem ; rdfs:range xsd:string ; rdfs:label "nome do armazém" ; rdfs:comment "Nome do armazém ou centro de distribuição." .
+ns:enderecoArmazem a owl:DatatypeProperty ; rdfs:domain ns:Armazem ; rdfs:range xsd:string ; rdfs:label "endereço do armazém" ; rdfs:comment "Endereço físico do armazém." .
+
+# Rota_Entrega
+ns:idRota a owl:DatatypeProperty ; rdfs:domain ns:RotaEntrega ; rdfs:range xsd:integer ; rdfs:label "identificador da rota" ; rdfs:comment "Identificador único da rota de entrega." .
+ns:nomeRota a owl:DatatypeProperty ; rdfs:domain ns:RotaEntrega ; rdfs:range xsd:string ; rdfs:label "nome da rota" ; rdfs:comment "Nome ou código da rota de entrega." .
+ns:origemRota a owl:DatatypeProperty ; rdfs:domain ns:RotaEntrega ; rdfs:range xsd:string ; rdfs:label "origem da rota" ; rdfs:comment "Ponto de origem da rota." .
+ns:destinoRota a owl:DatatypeProperty ; rdfs:domain ns:RotaEntrega ; rdfs:range xsd:string ; rdfs:label "destino da rota" ; rdfs:comment "Ponto de destino da rota." .
+
+# Envio
+ns:idEnvio a owl:DatatypeProperty ; rdfs:domain ns:Envio ; rdfs:range xsd:integer ; rdfs:label "identificador do envio" ; rdfs:comment "Identificador único do envio/expedição." .
+ns:dataEnvio a owl:DatatypeProperty ; rdfs:domain ns:Envio ; rdfs:range xsd:dateTime ; rdfs:label "data do envio" ; rdfs:comment "Data e hora do envio." .
+ns:statusEnvio a owl:DatatypeProperty ; rdfs:domain ns:Envio ; rdfs:range xsd:string ; rdfs:label "status do envio" ; rdfs:comment "Status do envio (e.g., 'Em Trânsito', 'Entregue', 'Atrasado')." .
+
+# Recebimento_Materia_Prima
+ns:idRecebimento a owl:DatatypeProperty ; rdfs:domain ns:RecebimentoMateriaPrima ; rdfs:range xsd:integer ; rdfs:label "identificador do recebimento" ; rdfs:comment "Identificador único do recebimento de matéria-prima." .
+ns:dataRecebimento a owl:DatatypeProperty ; rdfs:domain ns:RecebimentoMateriaPrima ; rdfs:range xsd:dateTime ; rdfs:label "data do recebimento" ; rdfs:comment "Data e hora do recebimento." .
+ns:quantidadeRecebida a owl:DatatypeProperty ; rdfs:domain ns:RecebimentoMateriaPrima ; rdfs:range xsd:decimal ; rdfs:label "quantidade recebida" ; rdfs:comment "Quantidade de matéria-prima recebida." .
+
+# Fornecedor
+ns:idFornecedor a owl:DatatypeProperty ; rdfs:domain ns:Fornecedor ; rdfs:range xsd:integer ; rdfs:label "identificador do fornecedor" ; rdfs:comment "Identificador único do fornecedor." .
+ns:nomeFornecedor a owl:DatatypeProperty ; rdfs:domain ns:Fornecedor ; rdfs:range xsd:string ; rdfs:label "nome do fornecedor" ; rdfs:comment "Nome do fornecedor." .
+ns:contatoEmailFornecedor a owl:DatatypeProperty ; rdfs:domain ns:Fornecedor ; rdfs:range xsd:string ; rdfs:label "e-mail de contato do fornecedor" ; rdfs:comment "E-mail de contato do fornecedor." .
+
+# Materia_Prima
+ns:idMateriaPrima a owl:DatatypeProperty ; rdfs:domain ns:MateriaPrima ; rdfs:range xsd:integer ; rdfs:label "identificador da matéria-prima" ; rdfs:comment "Identificador único da matéria-prima." .
+ns:nomeMateriaPrima a owl:DatatypeProperty ; rdfs:domain ns:MateriaPrima ; rdfs:range xsd:string ; rdfs:label "nome da matéria-prima" ; rdfs:comment "Nome da matéria-prima." .
+ns:unidadeMedidaMateriaPrima a owl:DatatypeProperty ; rdfs:domain ns:MateriaPrima ; rdfs:range xsd:string ; rdfs:label "unidade de medida da matéria-prima" ; rdfs:comment "Unidade de medida da matéria-prima (e.g., kg, metro, litro)." .
+
+# Receita_Produto
+ns:idReceita a owl:DatatypeProperty ; rdfs:domain ns:ReceitaProduto ; rdfs:range xsd:integer ; rdfs:label "identificador da receita" ; rdfs:comment "Identificador único da receita de fabricação." .
+
+# Item_Receita
+ns:idItemReceita a owl:DatatypeProperty ; rdfs:domain ns:ItemReceita ; rdfs:range xsd:integer ; rdfs:label "identificador do item de receita" ; rdfs:comment "Identificador único de um item dentro de uma receita." .
+ns:quantidadeNecessariaItemReceita a owl:DatatypeProperty ; rdfs:domain ns:ItemReceita ; rdfs:range xsd:decimal ; rdfs:label "quantidade necessária do item de receita" ; rdfs:comment "Quantidade da matéria-prima necessária para o item da receita." .
+
+# Producao_Ordem
+ns:idOrdemProducao a owl:DatatypeProperty ; rdfs:domain ns:ProducaoOrdem ; rdfs:range xsd:integer ; rdfs:label "identificador da ordem de produção" ; rdfs:comment "Identificador único da ordem de produção." .
+ns:quantidadeProduzir a owl:DatatypeProperty ; rdfs:domain ns:ProducaoOrdem ; rdfs:range xsd:integer ; rdfs:label "quantidade a produzir" ; rdfs:comment "Quantidade de itens a serem produzidos." .
+ns:dataInicioPrevistaProducao a owl:DatatypeProperty ; rdfs:domain ns:ProducaoOrdem ; rdfs:range xsd:date ; rdfs:label "data de início prevista da produção" ; rdfs:comment "Data prevista para início da produção." .
+ns:statusProducao a owl:DatatypeProperty ; rdfs:domain ns:ProducaoOrdem ; rdfs:range xsd:string ; rdfs:label "status da produção" ; rdfs:comment "Status atual da ordem de produção." .
+
+# Funcionario
+ns:idFuncionario a owl:DatatypeProperty ; rdfs:domain ns:Funcionario ; rdfs:range xsd:integer ; rdfs:label "identificador do funcionário" ; rdfs:comment "Identificador único do funcionário." .
+ns:nomeFuncionario a owl:DatatypeProperty ; rdfs:domain ns:Funcionario ; rdfs:range xsd:string ; rdfs:label "nome do funcionário" ; rdfs:comment "Nome completo do funcionário." .
+ns:emailFuncionario a owl:DatatypeProperty ; rdfs:domain ns:Funcionario ; rdfs:range xsd:string ; rdfs:label "email do funcionário" ; rdfs:comment "E-mail corporativo do funcionário." .
+ns:dataContratacao a owl:DatatypeProperty ; rdfs:domain ns:Funcionario ; rdfs:range xsd:date ; rdfs:label "data de contratação" ; rdfs:comment "Data de contratação do funcionário." .
+
+# Cargo
+ns:idCargo a owl:DatatypeProperty ; rdfs:domain ns:Cargo ; rdfs:range xsd:integer ; rdfs:label "identificador do cargo" ; rdfs:comment "Identificador único do cargo." .
+ns:nomeCargo a owl:DatatypeProperty ; rdfs:domain ns:Cargo ; rdfs:range xsd:string ; rdfs:label "nome do cargo" ; rdfs:comment "Nome do cargo (e.g., Engenheiro, Analista, Gerente)." .
+
+# Funcionario_Cargo
+ns:idFuncionarioCargo a owl:DatatypeProperty ; rdfs:domain ns:FuncionarioCargo ; rdfs:range xsd:integer ; rdfs:label "identificador da associação funcionário-cargo" ; rdfs:comment "ID da associação funcionário-cargo." .
+
+# Departamento
+ns:idDepartamento a owl:DatatypeProperty ; rdfs:domain ns:Departamento ; rdfs:range xsd:integer ; rdfs:label "identificador do departamento" ; rdfs:comment "Identificador único do departamento." .
+ns:nomeDepartamento a owl:DatatypeProperty ; rdfs:domain ns:Departamento ; rdfs:range xsd:string ; rdfs:label "nome do departamento" ; rdfs:comment "Nome do departamento (e.g., RH, TI, Marketing)." .
+
+# Fatura_Venda
+ns:idFaturaVenda a owl:DatatypeProperty ; rdfs:domain ns:FaturaVenda ; rdfs:range xsd:integer ; rdfs:label "identificador da fatura de venda" ; rdfs:comment "Identificador único da fatura de venda." .
+ns:dataFatura a owl:DatatypeProperty ; rdfs:domain ns:FaturaVenda ; rdfs:range xsd:date ; rdfs:label "data da fatura" ; rdfs:comment "Data de emissão da fatura." .
+ns:valorTotalFatura a owl:DatatypeProperty ; rdfs:domain ns:FaturaVenda ; rdfs:range xsd:decimal ; rdfs:label "valor total da fatura" ; rdfs:comment "Valor total da fatura de venda." .
+ns:statusPagamentoFatura a owl:DatatypeProperty ; rdfs:domain ns:FaturaVenda ; rdfs:range xsd:string ; rdfs:label "status do pagamento da fatura" ; rdfs:comment "Status do pagamento (e.g., 'Pago', 'Pendente', 'Atrasado')." .
+
+# Conta_Contabil
+ns:idContaContabil a owl:DatatypeProperty ; rdfs:domain ns:ContaContabil ; rdfs:range xsd:integer ; rdfs:label "identificador da conta contábil" ; rdfs:comment "Identificador único da conta contábil." .
+ns:numeroContaContabil a owl:DatatypeProperty ; rdfs:domain ns:ContaContabil ; rdfs:range xsd:string ; rdfs:label "número da conta contábil" ; rdfs:comment "Número da conta contábil (ex: 1.01.01.001)." .
+ns:nomeContaContabil a owl:DatatypeProperty ; rdfs:domain ns:ContaContabil ; rdfs:range xsd:string ; rdfs:label "nome da conta contábil" ; rdfs:comment "Nome da conta contábil (ex: Ativos Circulantes - Caixa)." .
+
+# Lancamento_Contabil
+ns:idLancamento a owl:DatatypeProperty ; rdfs:domain ns:LancamentoContabil ; rdfs:range xsd:integer ; rdfs:label "identificador do lançamento" ; rdfs:comment "Identificador único do lançamento contábil." .
+ns:dataLancamento a owl:DatatypeProperty ; rdfs:domain ns:LancamentoContabil ; rdfs:range xsd:date ; rdfs:label "data do lançamento" ; rdfs:comment "Data do lançamento." .
+ns:valorLancamento a owl:DatatypeProperty ; rdfs:domain ns:LancamentoContabil ; rdfs:range xsd:decimal ; rdfs:label "valor do lançamento" ; rdfs:comment "Valor do lançamento (débito ou crédito)." .
+ns:tipoLancamento a owl:DatatypeProperty ; rdfs:domain ns:LancamentoContabil ; rdfs:range xsd:string ; rdfs:label "tipo de lançamento" ; rdfs:comment "Tipo de lançamento (Débito, Crédito)." .
+
+# Centro_Custo
+ns:idCentroCusto a owl:DatatypeProperty ; rdfs:domain ns:CentroCusto ; rdfs:range xsd:integer ; rdfs:label "identificador do centro de custo" ; rdfs:comment "Identificador único do centro de custo." .
+ns:nomeCentroCusto a owl:DatatypeProperty ; rdfs:domain ns:CentroCusto ; rdfs:range xsd:string ; rdfs:label "nome do centro de custo" ; rdfs:comment "Nome do centro de custo (e.g., Marketing, Vendas, Produção)." .
+
+# Lancamento_Contabil_CC
+ns:idLancamentoCC a owl:DatatypeProperty ; rdfs:domain ns:LancamentoContabilCC ; rdfs:range xsd:integer ; rdfs:label "identificador da associação lançamento-centro de custo" ; rdfs:comment "ID da associação lançamento-centro de custo." .
+
+# Pagamento_Fornecedor
+ns:idPagamentoFornecedor a owl:DatatypeProperty ; rdfs:domain ns:PagamentoFornecedor ; rdfs:range xsd:integer ; rdfs:label "identificador do pagamento a fornecedor" ; rdfs:comment "Identificador único do pagamento a fornecedor." .
+ns:valorPagoFornecedor a owl:DatatypeProperty ; rdfs:domain ns:PagamentoFornecedor ; rdfs:range xsd:decimal ; rdfs:label "valor pago ao fornecedor" ; rdfs:comment "Valor total pago." .
+ns:dataPagamentoFornecedor a owl:DatatypeProperty ; rdfs:domain ns:PagamentoFornecedor ; rdfs:range xsd:date ; rdfs:label "data do pagamento ao fornecedor" ; rdfs:comment "Data do pagamento." .
+
+# Projeto_TI
+ns:idProjetoTI a owl:DatatypeProperty ; rdfs:domain ns:ProjetoTI ; rdfs:range xsd:integer ; rdfs:label "identificador do projeto de TI" ; rdfs:comment "Identificador único do projeto de TI." .
+ns:nomeProjetoTI a owl:DatatypeProperty ; rdfs:domain ns:ProjetoTI ; rdfs:range xsd:string ; rdfs:label "nome do projeto de TI" ; rdfs:comment "Nome do projeto de TI." .
+ns:descricaoProjetoTI a owl:DatatypeProperty ; rdfs:domain ns:ProjetoTI ; rdfs:range xsd:string ; rdfs:label "descrição do projeto de TI" ; rdfs:comment "Descrição detalhada do projeto." .
+ns:statusProjetoTI a owl:DatatypeProperty ; rdfs:domain ns:ProjetoTI ; rdfs:range xsd:string ; rdfs:label "status do projeto de TI" ; rdfs:comment "Status atual do projeto (e.g., 'Ativo', 'Concluído', 'Pendente')." .
+
+# Tarefa_TI
+ns:idTarefaTI a owl:DatatypeProperty ; rdfs:domain ns:TarefaTI ; rdfs:range xsd:integer ; rdfs:label "identificador da tarefa de TI" ; rdfs:comment "Identificador único da tarefa de TI." .
+ns:nomeTarefaTI a owl:DatatypeProperty ; rdfs:domain ns:TarefaTI ; rdfs:range xsd:string ; rdfs:label "nome da tarefa de TI" ; rdfs:comment "Nome da tarefa." .
+ns:statusTarefaTI a owl:DatatypeProperty ; rdfs:domain ns:TarefaTI ; rdfs:range xsd:string ; rdfs:label "status da tarefa de TI" ; rdfs:comment "Status da tarefa (e.g., 'Aberto', 'Em Progresso', 'Fechado')." .
+
+# Propriedades de Metadados de Governança (Inferidas)
+# Estas propriedades podem ser aplicadas a todas as classes ou a DatatypeProperties, conforme a granularidade
+ns:temClassificacaoConfidencialidade a owl:DatatypeProperty ;
+    rdfs:label "tem classificação de confidencialidade" ;
+    rdfs:domain owl:Thing ; # Pode ser aplicado a qualquer coisa (classe, propriedade)
+    rdfs:range xsd:string ;
+    rdfs:comment "Indica o nível de confidencialidade do dado (Público, Interno, Confidencial, Restrito)." .
+
+ns:temProprietarioDado a owl:DatatypeProperty ;
+    rdfs:label "tem proprietário do dado" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Indica o departamento ou área responsável pela governança do dado." .
+
+ns:temRegrasQualidadeDados a owl:DatatypeProperty ;
+    rdfs:label "tem regras de qualidade de dados" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Descreve regras específicas para garantir a qualidade do dado." .
+
+ns:temFrequenciaAtualizacao a owl:DatatypeProperty ;
+    rdfs:label "tem frequência de atualização" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Define a periodicidade de atualização do dado (Diária, Mensal, Tempo Real, etc.)." .
+
+ns:temRetencaoDadosAnos a owl:DatatypeProperty ;
+    rdfs:label "tem retenção de dados (anos)" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Período em anos pelo qual o dado deve ser retido." .
+
+ns:temRegraNegocioAssociada a owl:DatatypeProperty ;
+    rdfs:label "tem regra de negócio associada" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Descreve uma regra de negócio importante associada ao conceito ou dado." .
+
+ns:referenciaTermoGlossarioDMBOK a owl:DatatypeProperty ;
+    rdfs:label "referencia termo do glossário DMBOK" ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Link ou referência a um termo no glossário de dados da empresa." .
