@@ -1,0 +1,346 @@
+      *****************************************************************
+      *  PROGRAMA : BBB00100                                          *
+      *  TIPO     : BATCH                                             *
+      *                                                               *
+      *  DESCRICAO: PROGRAMA RECEBE MOVIMENTOS DE ENTRA E VALIDA      *
+      *             DADOS PARA PROVISAO.                              *
+      *                                                               *
+      *  DATA  : 01-05-2014                                           *
+      *  AUTOR : BRUNO H. BRITO                                       *
+      *                                                               *
+      *                                                               *
+      *                                                               *
+      *  ALTERACOES:                                                  *
+      *                                                               *
+      * --DATA--  --AUTOR--  ---------------DESCRICAO---------------- *
+      *                                                               *
+      *****************************************************************
+      *---------------------------------------------------------------*
+       IDENTIFICATION DIVISION.
+      *---------------------------------------------------------------*
+       PROGRAM-ID.    BBB00100.
+       AUTHOR.        BRUNO.
+
+      *---------------------------------------------------------------*
+       ENVIRONMENT    DIVISION.
+      *---------------------------------------------------------------*
+       CONFIGURATION  SECTION.
+       SPECIAL-NAMES.         DECIMAL-POINT IS COMMA.
+
+      *---------------------------------------------------------------*
+       INPUT-OUTPUT SECTION.
+      *---------------------------------------------------------------*
+       FILE-CONTROL.
+
+      *
+      *****************************************************************
+      *  DEFINICAO DE ARQUIVO DE DADOS                                *
+
+      *****************************************************************
+      *
+      *****************************************************************
+      * ARQUIVO DE ENTRADA SEQENT01                                   *
+      *****************************************************************
+           SELECT SEQENT01 ASSIGN          TO SEQENT01.
+
+           SELECT SEQSAI01 ASSIGN          TO SEQSAI01.
+      *
+           SELECT SEQSAI02 ASSIGN          TO SEQSAI02.
+
+      *
+      ******************************************************************
+      *  DATA-DIVISION                                                 *
+      ******************************************************************
+      *
+       DATA DIVISION.
+
+       FILE SECTION.
+      *
+      ******************************************************************
+      * SEQENT01 - ARQUIVO COM MOVIMENTOS DO SIST. PRODUTO             *
+      ******************************************************************
+      *
+       FD   SEQENT01
+            BLOCK 0
+            RECORDING MODE F.
+       01  ENT01-REG01.
+           05  ENT01-DATA-MOV    PIC X(08).
+           05  ENT01-COD-PROD    PIC X(02).
+           05  ENT01-VLR-MOV     PIC X(18).
+           05  ENT01-TIP-MOV     PIC X(01).
+      *
+      ******************************************************************
+      * SEQSAI01 - ARQUIVO PARA PROVISAO DOS DADOS                     *
+      ******************************************************************
+      *
+       FD   SEQSAI01
+            BLOCK 0
+            RECORDING MODE F.
+       01  SAI01-REG01.
+           05  SAI01-DATA-MOV    PIC 9(08).
+           05  SAI01-COD-PROD    PIC 9(02).
+           05  SAI01-VLR-MOV     PIC S9(15)V99.
+           05  SAI01-TIP-MOV     PIC X(01).
+      *
+      ******************************************************************
+      * SEQSAI02 - ARQUIVO DE LOG                                      *
+      ******************************************************************
+      *
+       FD   SEQSAI02
+            BLOCK 0
+            RECORDING MODE F.
+       01  SAI02-REG01.
+           05  SAI02-NUM-REG     PIC 9(08).
+           05  SAI02-COD-ERRO    PIC 9(02).
+           05  SAI02-MSG-ERRO    PIC X(50).
+      *
+      *****************************************************************
+      * WORKING-STORAGE SECTION                                       *
+      *****************************************************************
+      *
+
+       WORKING-STORAGE SECTION.
+      *
+      *****************************************************************
+      * DECLARACAO VARIAVEIS                                          *
+      *****************************************************************
+        01  WS-VARIAVEIS.
+            05  WS-TEM-LOG            PIC X(O1)     VALUE 'N'.
+            05  WS-FIM-ENT01          PIC X(01)     VALUE SPACES.
+            05  WS-TOT-LIDOS          PIC 9(09)     VALUE ZEROS.
+            05  WS-TOT-GRAV-SAI01     PIC 9(09)     VALUE ZEROS.
+            05  WS-TOT-GRAV-SAI02     PIC 9(09)     VALUE ZEROS.
+            05  WS-VALIDA                  PIC X(01)     VALUE SPACES.
+
+      * LAYOUT DE CONVERSAO
+       01  WS-AUX.
+           05  WS-AUX-DATA-MOV-TXT    PIC X(08)         VALUE SPACES.
+           05  FILLER REDEFINES      WS-AUX-DATA-MOV-TXT.
+               10  WS-AUX-DATA-MOV    PIC X(08)         VALUE SPACES
+           05  WS-AUX-COD-PROD-TXT    PIC X(02)         VALUE SPACES.
+           05  FILLER REDEFINES WS-AUX-COD-PROD-TXT.
+               10  WS-AUX-COD-PROD    PIC 9(02)         VALUE ZEROS.
+           05  WS-AUX-VLR-MOV-TXT     PIC S9(15)V99     VALUE ZEROS.
+           05  FILLER REDEFINES WS-AUX-COD-PROD-TXT.
+               10  WS-AUX-VLR-MOV     PIC S9(15)V99     VALUE ZEROS.
+           05  WS-AUX-TIP-MOV     PIC X (01)        VALUE SPACES.
+      *
+      ******************************************************************
+      *  PROCEDURE DIVISION.                                           *
+      ******************************************************************
+       PROCEDURE DIVISION.
+      *
+           PERFORM 1000-INICIO
+              THRU 1000-INICIO-EXIT.
+
+           PERFORM 2000-PROCESSA
+              THRU 2000-PROCESSA-EXIT
+             UNTIL WS-FIM-ENT01 EQUAL 'S'.
+
+           PERFORM 3000-FIM
+              THRU 3000-FIM-EXIT.
+
+           GOBACK.
+      *
+      ******************************************************************
+      *  INICIO DO PROGRAMA                                            *
+      ******************************************************************
+       1000-INICIO.
+
+      * <ABRE ARQUIVOS>
+           OPEN INPUT SEQENT01.
+
+           OPEN OUTPUT SEQSAI01
+                       SEQSAI02.
+
+           PERFORM 8888-READ-ARQ01
+              THRU 8888-READ-ARQ01-EXIT.
+
+       1000-INICIO-EXIT.
+           EXIT.
+      *
+      ******************************************************************
+      *  PROCESSA PRINCIPAL ATE O FINAL DOS ARQUIVO DE ENTRADAS        *
+
+      ******************************************************************
+       2000-PROCESSA.
+
+           MOVE 'S'     TO WS-VALIDA.
+
+           PERFORM 2100-VALIDA-CAMPOS
+              THRU 2100-VALIDA-CAMPOS-EXIT.
+
+           IF  WS-VALIDA EQUAL 'S'
+
+               PERFORM 2200-GRAVA-SAI01
+                  THRU 2200-GRAVA-SAI01-EXIT
+
+           ELSE
+
+               ADD 1                           TO WS-TOT-GRAV-SAI02
+               MOVE 'S'      TO WS-TEM-LOG
+
+           END-IF.
+
+           PERFORM 8888-READ-ARQ01
+              THRU 8888-READ-ARQ01-EXIT.
+
+       2000-PROCESSA-EXIT.
+           EXIT.
+      *
+      ******************************************************************
+      * REALIZA VALIDACAO BASICA DOS CAMPOS                            *
+      *                                                                *
+      ******************************************************************
+       2100-VALIDA-CAMPOS.
+
+           IF  ENT01-DATA-MOV NOT NUMERIC
+           0R  ENT01-DATA-MOV EQUAL SPACES
+           0R  ENT01-DATA-MOV EQUAL ZEROS
+
+               MOVE 'N'     TO WS-VALIDA
+
+               MOVE WS-TOT-LIDOS TO SAI02-NUM-REG
+               MOVE '10' TO SAI02-COD-ERRO
+               MOVE 'DATA DE MOVIMENTO INVALIDA' TO SAI02-MSG-ERRO
+
+               PERFORM 8888-GRAVA-SAI02
+                  THRU 8888-GRAVA-SAI02-EXIT
+
+           END-IF.
+
+           IF  ENT01-COD-PROD NOT NUMERIC
+           OR  ENT01-COD-PROD EQUAL SPACES
+           0R  ENT01-COD-PROD EQUAL ZEROS
+
+               MOVE 'N'     TO WS-VALIDA
+
+               MOVE WS-TOT-LIDOS TO SAI02-NUM-REG
+               MOVE '20' TO SAI02-COD-ERRO
+               MOVE 'CODIGO DO PRODUTO INVALIDO' TO SAI02-MSG-ERRO
+
+               PERFORM 8888-GRAVA-SAI02
+                  THRU 8888-GRAVA-SAI02-EXIT
+
+           END-IF.
+
+           IF  ENT01-VLR-MOV NOT NUMERIC
+           OR  ENT01-VLR-MOV EQUAL SPACES
+           0R  ENT01-VLR-MOV EQUAL ZEROS
+
+               MOVE 'N'     TO WS-VALIDA
+
+               MOVE WS-TOT-LIDOS TO SAI02-NUM-REG
+               MOVE '30' TO SAI02-COD-ERRO
+               MOVE 'VALOR DO MOVIMENTO INVALIDO' TO SAI02-MSG-ERRO
+
+               PERFORM 8888-GRAVA-SAI02
+                  THRU 8888-GRAVA-SAI02-EXIT
+
+           END-IF.
+
+           IF  ENT01-TIP-MOV NOT EQUAL 'C'
+           AND ENT01-TIP-MOV NOT EQUAL 'D'
+
+               MOVE 'N'     TO WS-VALIDA
+
+               MOVE WS-TOT-LIDOS TO SAI02-NUM-REG
+               MOVE '40' TO SAI02-COD-ERRO
+               MOVE 'TIPO DE MOVIMENTO INVALIOA' TO SAI02-MSG-ERRO
+
+               PERFORM 8888-GRAVA-SAI02
+                  THRU 8888-GRAVA-SAI02-EXIT
+
+           END-IF.
+      *
+       2100-VALIDA-CAMPOS-EXIT.
+           EXIT.
+      *
+      *****************************************************************
+      *   WRITE DO ARQUIVO DE SAIDA SEQSAI01                          *
+      *****************************************************************
+       2200-GRAVA-SAI01.
+      *
+           MOVE ENT01-DATA-MOV    TO WS-AUX-DATA-MOV-TXT.
+           MOVE ENT01-COD-PROD    TO WS-AUX-COD-PROD-TXT.
+           MOVE ENT01-VLR-MOV     TO WS-AUX-VLR-MOV-TXT.
+           MOVE ENT01-TIP-MOV     TO WS-AUX-TIP-MOV.
+
+
+           MOVE WS-AUX-DATA-MOV-TXT     TO SAI01-DATA-MOV.
+           MOVE WS-AUX-COD-PROD-TXT     TO SAI01-COD-PROD.
+           MOVE WS-AUX-VLR-MOV-TXT      TO SAI01-VLR-MOV.
+           MOVE WS-AUX-TIP-MOV          TO SAI01-TIP-MOV.
+
+           WRITE SAI01-REG01
+      *
+           ADD 1                           TO WS-TOT-GRAV-SAI01.
+           INITIALIZE SAI01-REG01.
+      *
+       2200-GRAVA-SAI01-EXIT.
+           EXIT.
+      *
+      ******************************************************************
+      *  FINALIZA PROCESSAMENTO                                        *
+      ******************************************************************
+       3000-FIM.
+
+           CLOSE SEQENT01
+                 SEQSAI01
+                 SEQSAI02.
+
+
+           DISPLAY '#BBB00100 *************************************'.
+           DISPLAY '#BBB00100 - EXECUTADO COM SUCESSO              '.
+           DISPLAY '#BBB00100 -                                    '.
+           DISPLAY '#BBB00100 - TOTAL LIDOS: '         WS-TOT-LIDOS.
+           DISPLAY '#BBB00100 - TOTAL REGISTROS OK:  '
+           WS-TOT-GRAV-SAI01.
+           DISPLAY '#BBB00100 - TOTAL REGISTROS NOK: '
+           WS-TOT-GRAV-SAI02.
+           DISPLAY '#BBB00100 -                                    '.
+
+           IF WS-TEM-LOG EQUAL 'S'
+
+              DISPLAY '#BBB00100 - HA REGISTRO DE LOG. FAVOR VERIFICAR'
+              DISPLAY '#BBB00100 -                                    '
+
+           END-IF.
+
+           DISPLAY '#BBB00100 *************************************'.
+
+           MOVE ZEROS                      TO RETURN-CODE.
+
+       3000-FIM-EXIT.
+           EXIT.
+      *
+      ******************************************************************
+      *  LEITURA DE ARQUIVO                                            *
+      ******************************************************************
+       8888-READ-ARQ01.
+
+           READ SEQENT01
+             AT END
+                MOVE 'S'                    TO WS-FIM-ENT01
+             NOT AT END
+                ADD 1       TO WS-TOT-LIDOS
+           END-READ.
+
+       8888-READ-ARQ01-EXIT.
+           EXIT.
+      *
+      *****************************************************************
+      *   WRITE DO ARQUIVO DE SAIDA SEQSAI02                          *
+      *****************************************************************
+       8888-GRAVA-SAI02.
+      *
+           WRITE SAI02-REG01
+      *
+           INITIALIZE SAI02-REG01.
+      *
+       8888-GRAVA-SAI02-EXIT.
+           EXIT.
+      *
+      *****************************************************************
+      *    EXIT. DO PROGRAMA                                          *
+      *****************************************************************

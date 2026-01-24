@@ -1,0 +1,86 @@
+//**********************************************************************
+//BBS00100 JOB (%%ODAY.%%OMONTH,%%OYEAR%%.DP),00310.CONTROLM,CLASS=D,
+//         REGION=8M,MSGCLASS=V,RESTART=*         
+/*ROUTE XEQ ATIS
+/*JOBPARM S=MVSE
+//*
+//*-------------------------------------------------------------------*
+//* JOB QUE RECEBE MOVS E VALIDA PARA PROVISIONAMENTO                 *
+//*-------------------------------------------------------------------*
+//*
+//*********************************************************************
+//*    EFETUA A DELECAO DOS ARQUIVOS DE SAIDA NO INICIO DO PROCESSO   *
+//*********************************************************************
+//BBARQDEL EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+  DELETE   BB.RE30.MOVSOK.WORK
+  DELETE   BB.RE30.MOVSLOG.WORK
+       SET MAXCC = 0
+       SET LASTCC = 0
+//*
+//*********************************************************************
+//* PGM - BBB00100 - VALIDA MOVS DO LEGADO E GERA ARQ DE PROVISAO     *
+//*********************************************************************
+//BBB00100  EXEC PGM=BBB00100,COND=(0,NE)
+//STEPLIB   DD DSN=PROD.LINKLIB,DISP=SHR
+//          DD DSN=PROD.LOADLIB,DISP=SHR
+//SYSUDUMP  DD SYSOUT=U
+//SYSOUT    DD SYSOUT=*
+//SYSTSPRT  DD SYSOUT=*
+//SEQENT01  DD DSN=BB.RE07.MOVSLEG.GDG,
+//             DISP=SHR
+//SEQSAI01  DD DSN=BB.RE30.MOVSOK.WORK,
+//             DISP=(,CATLG,DELETE),
+//             DCB=(GDGCTB,LRECL=029,RECFM=FB),
+//             UNIT=SYSDA,SPACE=(TRK,(4000,2000),RLSE)
+//SEQSAI02  DD DSN=BB.RE30.MOVSLOG.WORK,
+//             DISP=(,CATLG,DELETE),
+//             DCB=(BLKSIZE=0,LRECL=060,RECFM=FB),
+//             UNIT=SYSDA,SPACE=(TRK,(4000,2000),RLSE)
+//*
+//*********************************************************************
+//*    CONCATENA MOVS OK PARA PROVISAO                                *
+//*********************************************************************
+//BBSRT001 EXEC PGM=SORT,COND=(0,NE)
+//SYSOUT   DD SYSOUT=*
+//SORTMSG  DD SYSOUT=*
+//SORTIN   DD DSN=BB.RE30.MOVSOK.WORK,DISP=SHR
+//SORTOUT  DD DSN=BB.RE30.PROVISAO.GDG(+1),
+//            DISP=(NEW,CATLG,DELETE),
+//            UNIT=SYSDA,
+//            SPACE=(TRK,(5000,1000),RLSE),
+//            DCB=(BLKSIZE=0,LRECL=029,RECFM=FB)
+//SYSIN    DD *
+  SORT FIELDS=(09,02,A,01,08,A),FORMAT=BI
+  END
+//*
+//*********************************************************************
+//*  DELETA GDG DE MOVS RECEBIDOS DO LEGADO                           *
+//*********************************************************************
+//BBGDGDEL EXEC PGM=IEFBR14,COND=(0,NE)
+//SYSPRINT DD  SYSOUT=*
+//DELETE01 DD  DSN=BB.RE07.MOVSLEG.GDG,
+//             SPACE=(1,1),DISP=(MOD,DELETE)
+//*
+//*********************************************************************
+//*  DEFINE GDG DE MOVS RECEBIDOS DO LEGADO                           *
+//*********************************************************************
+//BBGDGDEF EXEC PGM=IDCAMS,COND=(0,NE)
+//SYSPRINT DD  SYSOUT=*
+//SYSIN    DD  *
+   DEF GDG(NAME(BB.RE07.MOVSLEG.GDG) SCR LIMIT(10) EMPTY)
+//*
+//*********************************************************************
+//*  GERA VERSAO GDG VAZIA PARA PROX. PROCESSAMENTOS                  *
+//*********************************************************************
+//BBGDGGER EXEC PGM=IEFBR14,COND=(0,NE)
+//SORTOUT  DD  DSN=BB.RE07.MOVSLEG.GDG(+1),
+//             DISP=(,CATLG,DELETE),UNIT=PRDWRK,
+//             SPACE=(TRK,(1,1),RLSE),
+//             DCB=(GDGCTB,LRECL=029,RECFM=FB)
+//*
+//*********************************************************************
+//*                        FIM DA STREAM                              *
+//*********************************************************************
+//*

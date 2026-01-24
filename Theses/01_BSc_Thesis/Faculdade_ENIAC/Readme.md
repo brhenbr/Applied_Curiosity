@@ -1,0 +1,2 @@
+## Esta pasta contém a materialização da pesquisa realizada para conclusão do curso de graduação em Sistemas de Informação da Faculdade ENIAC em 2008
+## A proposta foi coletar, organizar, analisar e relatar os conceitos e aplicações de CMMI (Capability Maturity Model Integrated) e conecta-lo a producao de qualidade e maturidade para processos de software.

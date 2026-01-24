@@ -1,0 +1,192 @@
+      *****************************************************************
+      *  PROGRAMA : PAA1254                                           *
+      *  TIPO     : ONLINE/CICS                                       *
+      *                                                               *
+      *  DESCRICAO: MENU PARA CHAMAR LISTA DE FUNCIONARIOS.           *
+      *                                                               *
+      *  DATA  : 20-11-2012                                           *
+      *  AUTOR : BRUNO H. BRITO                                       *
+      *                                                               *
+      *                                                               *
+      *                                                               *
+      *  ALTERACOES:                                                  *
+      *                                                               *
+      * --DATA--  --AUTOR--  ---------------DESCRICAO---------------- *
+      *                                                               *
+      *****************************************************************
+       ID DIVISION.
+       PROGRAM-ID. PAA1254.
+      *****************************************************************
+      *
+      *****************************************************************
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+
+       SPECIAL-NAMES.
+           DECIMAL-POINT IS COMMA.
+      *****************************************************************
+      *
+      *****************************************************************
+       DATA DIVISION.
+
+       WORKING-STORAGE SECTION.
+
+           COPY  PAA1254.
+      *****************************************************************
+      *
+      *****************************************************************
+       01 WS-TIME                 PIC S9(15) COMP-3.
+       01 WS-USUARIO              PIC  X(08) VALUE SPACES.
+       01 WS-COMMAREA             PIC  9(01) VALUE 0.
+      *****************************************************************
+      *
+      *****************************************************************
+       LINKAGE SECTION.
+
+       01 DFHCOMMAREA.
+          05  VLR-RECEBIDO        PIC 9(01).
+      *****************************************************************
+      *
+      *****************************************************************
+       PROCEDURE  DIVISION  USING DFHCOMMAREA.
+
+           MOVE  EIBTRMID               TO  TERMMENO
+
+           EXEC CICS ASKTIME
+              ABSTIME(WS-TIME)
+           END-EXEC
+
+           EXEC CICS ASSIGN
+              USERID(WS-USUARIO)
+           END-EXEC
+
+           MOVE WS-USUARIO              TO  USERFLDO
+
+           EXEC CICS FORMATTIME
+              ABSTIME(WS-TIME)
+              DDMMYYYY(DATEMENO) DATESEP('/')
+              TIME(TIMEFLDO) TIMESEP(':')
+           END-EXEC
+
+           IF EIBCALEN = 0
+              MOVE 'BEM VINDO AO SISTEMA ' TO  MSGMENO
+              PERFORM 0100-PRIMEIRA-VEZ
+           ELSE
+              IF EIBTRNID = 'U542'
+                 PERFORM 0100-PRIMEIRA-VEZ
+              ELSE
+                 PERFORM 0200-SEGUNDA-VEZ
+              END-IF
+           END-IF.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       0100-PRIMEIRA-VEZ.
+
+
+           EXEC CICS
+               SEND MAP('PAA1254M') MAPSET('PAA1254T') FROM (PAA1254MO)
+               ERASE  FREEKB
+           END-EXEC
+
+           MOVE 1 TO WS-COMMAREA
+
+           EXEC CICS
+               RETURN
+               TRANSID('U541')
+               COMMAREA(WS-COMMAREA)
+           END-EXEC.
+       0100-FIM.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       0200-SEGUNDA-VEZ.
+
+           EXEC CICS HANDLE AID
+                PF4    (0300-FINAL)
+                ENTER  (0400-VERIFICA-FUNCAO)
+                ANYKEY (0500-TECLA-INVALIDA)
+           END-EXEC.
+
+           EXEC CICS RECEIVE
+               MAP('PAA1254M') MAPSET('PAA1254T') INTO (PAA1254MI)
+           END-EXEC.
+       0200-FIM.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       0300-FINAL.
+
+           MOVE 'OBRIGADO POR UTILIZAR NOSSO SISTEMA!!!'
+                                           TO MSGMENO
+
+           EXEC CICS
+               SEND MAP('PAA1254M') MAPSET('PAA1254T') FROM (PAA1254MO)
+               ERASE  FREEKB
+           END-EXEC
+
+           EXEC CICS
+               RETURN
+           END-EXEC.
+           EXIT.
+
+       0300-FIM.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       0400-VERIFICA-FUNCAO.
+
+           IF OPCFLDI = '1'
+              EXEC CICS XCTL
+                   PROGRAM('PAA2254')
+              END-EXEC
+           ELSE
+              IF OPCFLDI = '2' OR '3' OR '4'
+                 MOVE 'FUNCAO NAO IMPLEMENTADA ' TO  MSGMENO
+              ELSE
+                 MOVE 'SELECIONE UMA OPCAO VALIDA' TO  MSGMENO
+              END-IF
+           END-IF
+
+           EXEC CICS
+                SEND MAP('PAA1254M') MAPSET('PAA1254T') FROM (PAA1254MO)
+                FREEKB
+           END-EXEC
+
+           MOVE 1 TO WS-COMMAREA
+
+           EXEC CICS
+                   RETURN
+                   TRANSID('U541')
+                   COMMAREA(WS-COMMAREA)
+           END-EXEC.
+       0400-FIM.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       0500-TECLA-INVALIDA.
+
+           MOVE 'TECLA INVALIDA' TO  MSGMENO
+
+           EXEC CICS
+                SEND MAP('PAA1254M') MAPSET('PAA1254T') FROM (PAA1254MO)
+                FREEKB
+           END-EXEC
+
+           MOVE 1 TO WS-COMMAREA
+
+           EXEC CICS
+                   RETURN
+                   TRANSID('U541')
+                   COMMAREA(WS-COMMAREA)
+           END-EXEC.
+       0500-FIM.
+           EXIT.
+      *****************************************************************
+      *  FIM DO PROGRAMA
+      *****************************************************************

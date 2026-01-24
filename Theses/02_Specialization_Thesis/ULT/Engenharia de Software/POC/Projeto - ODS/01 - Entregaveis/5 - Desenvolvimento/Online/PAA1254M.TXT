@@ -1,0 +1,101 @@
+PAA1254M DFHMSD TYPE=&SYSPARM,                                         X
+               TIOAPFX=YES,                                            X
+               CURSLOC=YES,                                            X
+               STORAGE=AUTO,                                           X
+               CTRL=(FRSET,FREEKB),                                    X
+               EXTATT=MAPONLY,                                         X
+               LANG=COBOL,                                             X
+               MODE=INOUT
+PAA1254T DFHMDI DATA=FIELD,                                            X
+               SIZE=(24,80)
+MSGMEN  DFHMDF POS=(01,20),                                            X
+               LENGTH=41,COLOR=RED,                                    X
+               ATTRB=(PROT,NORM),HILIGHT=BLINK
+
+DATEMEN DFHMDF POS=(02,05),                                            X
+               LENGTH=10,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM,FSET)
+        DFHMDF POS=(02,34),                                            X
+               LENGTH=3,COLOR=BLUE,                                    X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='ULT'
+        DFHMDF POS=(02,74),                                            X
+               LENGTH=8,COLOR=BLUE,                                    X
+               ATTRB=(PROT,NORM,FSET),                                 X
+               INITIAL='PAA1254T'
+
+TIMEFLD DFHMDF POS=(03,05),                                            X
+               LENGTH=08,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM)
+        DFHMDF POS=(03,29),                                            X
+               LENGTH=23,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='SISTEMA DE FUNCIONARIOS'
+        DFHMDF POS=(03,54),                                            X
+               LENGTH=05,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='USER:'
+USERFLD DFHMDF POS=(02,60),                                            X
+               LENGTH=07,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM)
+        DFHMDF POS=(03,69),                                            X
+               LENGTH=05,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='TERM:'
+TERMMEN DFHMDF POS=(03,75),                                            X
+               LENGTH=04,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM)
+
+        DFHMDF POS=(06,28),                                            X
+               LENGTH=06,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='OPCOES'
+
+        DFHMDF POS=(07,24),                                            X
+               LENGTH=16,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='----------------'
+
+        DFHMDF POS=(09,29),                                            X
+               LENGTH=12,COLOR=TURQUOISE,                              X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='1 - CONSULTA'
+        DFHMDF POS=(11,29),                                            X
+               LENGTH=15,COLOR=TURQUOISE,                              X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='2 - ATUALIZACAO'
+        DFHMDF POS=(13,29),                                            X
+               LENGTH=13,COLOR=TURQUOISE,                              X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='3 - INCLUSAO'
+        DFHMDF POS=(15,29),                                            X
+               LENGTH=12,COLOR=TURQUOISE,                              X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='4 - EXCLUSAO'
+        DFHMDF POS=(17,29),                                            X
+               LENGTH=07,COLOR=RED,                                    X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='OPCAO: '
+
+OPCFLD  DFHMDF POS=(17,37),                                            X
+               LENGTH=01,COLOR=GREEN,                                  X
+               ATTRB=(UNPROT,NORM,IC),                                 X
+               INITIAL=' '
+        DFHMDF POS=(17,39),                                            X
+               LENGTH=01,                                              X
+               ATTRB=(ASKIP)
+
+        DFHMDF POS=(22,23),                                            X
+               LENGTH=35,COLOR=GREEN,                                  X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='COMANDOS :         ENTER        PF4'
+        DFHMDF POS=(23,42),                                            X
+               LENGTH=06,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='ENTRA '
+        DFHMDF POS=(23,55),                                            X
+               LENGTH=04,COLOR=BLUE,                                   X
+               ATTRB=(PROT,NORM),                                      X
+               INITIAL='FIM'
+PAA1254M DFHMSD TYPE=FINAL
+        END

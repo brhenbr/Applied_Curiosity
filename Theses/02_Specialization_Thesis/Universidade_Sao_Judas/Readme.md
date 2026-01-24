@@ -1,0 +1,2 @@
+## Esta pasta contém a materialização da pesquisa realizada para conclusão do curso de especialização em Integração de soluções de TI (Arquitetura de soluções) em 2013
+## A proposta foi coletar, organizar, analisar e relatar os conceitos e aplicações de Big Data, trazendo exemplos de aplicações e analise de impactos nos modelos socioeconomicos.

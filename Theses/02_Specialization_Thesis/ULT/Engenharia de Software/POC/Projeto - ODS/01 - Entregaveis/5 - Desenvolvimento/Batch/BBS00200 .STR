@@ -1,0 +1,66 @@
+//**********************************************************************
+//BBS00200 JOB (%%ODAY.%%OMONTH,%%OYEAR%%.DP),00310.CONTROLM,CLASS=D,
+//         REGION=8M,MSGCLASS=V,RESTART=*         
+/*ROUTE XEQ ATIS
+/*JOBPARM S=MVSE
+//*
+//*-------------------------------------------------------------------*
+//* JOB QUE PROVISIONA MOVS RECEBIDOS NA BASE DE DADOS MESTRE         *
+//*-------------------------------------------------------------------*
+//*
+//********************************************************************
+//* CARGA DA BASE DE DADOS MESTRE                                    *
+//********************************************************************
+//BBLOAD01 EXEC DSNUPROC,                                             
+//             COND=(0,NE),                                           
+//             SYSTEM='DSN4',                                         
+//             UID='BBS00200',                                        
+//             UTPROC=''                                              
+//SYSUT1   DD  UNIT=SYSDA,                                            
+//             SPACE=(TRK,(1000,1000),RLSE)                           
+//SYSPRINT DD  SYSOUT=*                                               
+//SYSDISC  DD  SYSOUT=*                                               
+//SORTOUT  DD  UNIT=SYSDA,                                            
+//             SPACE=(TRK,(1000,1000),RLSE)                           
+//SYSERR   DD  UNIT=SYSDA,                                            
+//             SPACE=(TRK,(1000,1000),RLSE)                           
+//SYSMAP   DD  UNIT=SYSDA,                                            
+//             SPACE=(TRK,(1000,1000),RLSE)                           
+//UTPRINT  DD  SYSOUT=*                                               
+//SYSIN    DD  *                                                      
+    LOAD DATA NOCOPYPEND                                              
+    LOG NO INDDN  SYSREC00 RESUME YES                                 
+    INTO TABLE TB_DT_MESTRE                                       
+//*                                                                 
+//SYSREC00 DD  DSN=BB.RE30.PROVISAO.GDG,
+//             DISP=SHR     
+//*
+//*********************************************************************
+//*  DELETA GDG DE PROVISAO DE DADOS MESTRE                           *
+//*********************************************************************
+//BBGDGDEL EXEC PGM=IEFBR14,COND=(0,NE)
+//SYSPRINT DD  SYSOUT=*
+//DELETE01 DD  DSN=BB.RE30.PROVISAO.GDG,
+//             SPACE=(1,1),DISP=(MOD,DELETE)
+//*
+//*********************************************************************
+//*  DEFINE GDG DE PROVISAO DE DADOS MESTRE                           *
+//*********************************************************************
+//BBGDGDEF EXEC PGM=IDCAMS,COND=(0,NE)
+//SYSPRINT DD  SYSOUT=*
+//SYSIN    DD  *
+   DEF GDG(NAME(BB.RE30.PROVISAO.GDG) SCR LIMIT(10) EMPTY)
+//*
+//*********************************************************************
+//*  GERA VERSAO GDG VAZIA PARA PROX. PROCESSAMENTOS                  *
+//*********************************************************************
+//BBGDGGER EXEC PGM=IEFBR14,COND=(0,NE)
+//SORTOUT  DD  DSN=BB.RE30.PROVISAO.GDG(+1),
+//             DISP=(,CATLG,DELETE),UNIT=PRDWRK,
+//             SPACE=(TRK,(1,1),RLSE),
+//             DCB=(GDGCTB,LRECL=029,RECFM=FB)
+//*
+//*********************************************************************
+//*                        FIM DA STREAM                              *
+//*********************************************************************
+//*

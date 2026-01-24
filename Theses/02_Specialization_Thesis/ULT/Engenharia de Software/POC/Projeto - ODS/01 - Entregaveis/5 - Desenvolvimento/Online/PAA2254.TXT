@@ -1,0 +1,288 @@
+      *****************************************************************
+      *  PROGRAMA : PAA2254                                           *
+      *  TIPO     : ONLINE/CICS                                       *
+      *                                                               *
+      *  DESCRICAO: LISTA ARQUIVO DE CADASTRO DE FUNCIONARIOS.        *
+      *                                                               *
+      *  DATA  : 20-11-2012                                           *
+      *  AUTOR : BRUNO H. BRITO                                       *
+      *                                                               *
+      *                                                               *
+      *                                                               *
+      *  ALTERACOES:                                                  *
+      *                                                               *
+      * --DATA--  --AUTOR--  ---------------DESCRICAO---------------- *
+      *                                                               *
+      *****************************************************************
+       IDENTIFICATION              DIVISION.
+       PROGRAM-ID.                 PAA2254.
+      *****************************************************************
+      *
+      *****************************************************************
+       ENVIRONMENT                 DIVISION.
+      *****************************************************************
+      *
+      *****************************************************************
+       DATA                        DIVISION.
+       WORKING-STORAGE   SECTION.
+
+           COPY DFHAID.
+
+           COPY PAA2254.
+      *****************************************************************
+      *
+      *****************************************************************
+       01  FILLER  REDEFINES PAA2254O.
+           05  FILLER            PIC X(132).
+           05  TAB OCCURS 15 TIMES.
+               10  FILLER        PIC X(03).
+               10  TAB-CODIGO    PIC X(07).
+               10  FILLER        PIC X(03).
+               10  TAB-NOME      PIC X(25).
+               10  FILLER        PIC X(03).
+               10  TAB-NOME      PIC X(04).
+
+       01   DADOS-ARQUIVO.
+            05  ARQ-CODIGO       PIC X(07).
+            05  ARQ-NOME         PIC X(25).
+            05  ARQ-RAMAL        PIC X(04).
+
+       01   WS-VALOR-ULTIMO-CODIGO  PIC X(07).
+       01   WS-CHAVE-FIM-DADOS      PIC X(01) VALUE 'N'.
+       01   WS-INDICE           PIC 9(02).
+       01   WS-TIME             PIC S9(15) COMP-3.
+       01   WS-VALOR            PIC  X(01) VALUE 'X'.
+       01   WS-USERID           PIC  X(08).
+       01   RESPONSE-CODE       PIC S9(08)  COMP.
+       01   WS-TIPO-LEITURA     PIC X(01) VALUE SPACES.
+      *
+      *** ONDE: F = FORWARD / B = BACKWARD
+
+      *****************************************************************
+      *
+      *****************************************************************
+       01   WS-COMMAREA.
+            05  WS-CA-CHAVE-FIM-DADOS      PIC X(01).
+            05  WS-CA-VALOR-ULTIMO-CODIGO  PIC X(07).
+      *****************************************************************
+      *
+      *****************************************************************
+       LINKAGE SECTION.
+       01   DFHCOMMAREA.
+            05  LK-CA-CHAVE-FIM-DADOS      PIC X(01).
+            05  LK-CA-VALOR-ULTIMO-CODIGO  PIC X(07).
+      *****************************************************************
+      *
+      *****************************************************************
+       PROCEDURE  DIVISION  USING DFHCOMMAREA.
+
+            IF  EIBCALEN = 0 OR EIBTRNID = 'U541'
+                MOVE 0        TO ARQ-CODIGO
+                MOVE 'F'      TO WS-TIPO-LEITURA
+                PERFORM    5000-START-BROWSE
+                PERFORM    1000-PRIMEIRA-VEZ
+            ELSE
+                MOVE   LK-CA-VALOR-ULTIMO-CODIGO  TO ARQ-CODIGO
+                PERFORM    5000-START-BROWSE
+                PERFORM    2000-SEGUNDA-VEZ
+            END-IF.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       1000-PRIMEIRA-VEZ.
+
+           IF LK-CA-CHAVE-FIM-DADOS = 'S'
+               MOVE 'FIM DOS DADOS' TO MSGO
+               PERFORM 4000-ENVIA-MENSAGEM-1
+           END-IF
+
+           EXEC CICS ASKTIME
+                ABSTIME(WS-TIME)
+           END-EXEC
+
+           EXEC CICS FORMATTIME
+                ABSTIME(WS-TIME)
+                DDMMYYYY(DATAO) DATESEP('/')
+                TIME(HORAO) TIMESEP(':')
+           END-EXEC
+
+           EXEC CICS
+                ASSIGN
+                USERID(WS-USERID)
+           END-EXEC
+
+           MOVE WS-USERID                    TO  USERFLDO
+           MOVE EIBTRMID                     TO  TERMMENO
+
+           PERFORM VARYING WS-INDICE FROM 1 BY 1 UNTIL WS-INDICE = 16
+
+               IF WS-TIPO-LEITURA EQUAL 'F'
+                  PERFORM  6000-READ-ARQUIVO-NEXT
+               ELSE
+                  PERFORM  6000-READ-ARQUIVO-PREV
+               END-IF
+               IF  EIBRESP  EQUAL DFHRESP(ENDFILE)
+                   MOVE 'S'           TO WS-CA-CHAVE-FIM-DADOS
+                   COMPUTE WS-INDICE = 15
+               ELSE
+                   MOVE ARQ-CODIGO      TO TAB-CODIGO(WS-INDICE)
+                   MOVE ARQ-NOME        TO TAB-NOME(WS-INDICE)
+                   MOVE ARQ-RAMAL       TO TAB-NOME(WS-INDICE)
+               END-IF
+           END-PERFORM
+           MOVE ARQ-CODIGO    TO WS-CA-VALOR-ULTIMO-CODIGO
+
+           EXEC CICS
+                SEND MAP('PAA2254M') MAPSET('PAA2254T') FROM (PAA2254O)
+                ERASE FREEKB
+           END-EXEC
+
+           EXEC CICS
+                   RETURN
+                   TRANSID('U542')
+                   COMMAREA(WS-COMMAREA)
+           END-EXEC.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+        2000-SEGUNDA-VEZ.
+
+           EXEC CICS RECEIVE
+               MAP('PAA2254M') MAPSET('PAA2254T') INTO (PAA2254I)
+           END-EXEC
+
+           IF  EIBAID = DFHPF4
+               PERFORM 3000-VAI-ACABAR
+           ELSE
+               IF EIBAID = DFHPF3
+                  PERFORM 7000-RETORNA-MENU
+               ELSE
+                  IF EIBAID = DFHPF8
+                      MOVE 'F'      TO WS-TIPO-LEITURA
+                      PERFORM 5000-START-BROWSE
+                      MOVE 'N'   TO LK-CA-CHAVE-FIM-DADOS
+                      PERFORM 1000-PRIMEIRA-VEZ
+                  ELSE
+                      IF EIBAID = DFHPF9
+                         MOVE 'B'      TO WS-TIPO-LEITURA
+                         PERFORM 5000-START-BROWSE
+                         MOVE 'N'   TO LK-CA-CHAVE-FIM-DADOS
+                         PERFORM 1000-PRIMEIRA-VEZ
+                      ELSE
+                          MOVE 'APERTE UMA TECLA VALIDA!!!!'
+                               TO MSGO
+                          PERFORM 4000-ENVIA-MENSAGEM-1
+                      END-IF
+                  END-IF
+               END-IF
+           END-IF.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       3000-VAI-ACABAR.
+
+           MOVE 'OBRIGADO POR UTILIZAR NOSSO SISTEMA!!!'
+                                           TO MSGMENO
+
+           EXEC CICS
+               SEND MAP('PAA2254M') MAPSET('PAA2254T') FROM (PAA2254MO)
+               ERASE  FREEKB
+           END-EXEC
+
+           EXEC CICS
+               RETURN
+           END-EXEC.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       4000-ENVIA-MENSAGEM-1.
+
+           EXEC CICS ASKTIME
+                ABSTIME(WS-TIME)
+           END-EXEC
+
+           EXEC CICS FORMATTIME
+                ABSTIME(WS-TIME)
+                DDMMYYYY(DATAO) DATESEP('/')
+                TIME(HORAO) TIMESEP(':')
+           END-EXEC
+           EXEC CICS
+                SEND MAP('EBST000') MAPSET('PAA2254') FROM (EBST000I)
+                FREEKB
+           END-EXEC
+
+           MOVE DFHCOMMAREA TO WS-COMMAREA
+
+           EXEC CICS
+                   RETURN
+                   TRANSID('U542')
+                   COMMAREA(WS-COMMAREA)
+           END-EXEC.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       5000-START-BROWSE.
+
+           EXEC CICS
+                STARTBR FILE('BASEPOS')
+                RIDFLD(ARQ-CODIGO)
+                GTEQ
+                RESP(RESPONSE-CODE)
+           END-EXEC.
+
+           IF  RESPONSE-CODE = DFHRESP(NOTFND)
+               IF  EIBTRNID = 'MENU'
+                   MOVE 'NAO HA REGISTROS NO ARQUIVO' TO MSGO
+                   PERFORM 4000-ENVIA-MENSAGEM-1
+               ELSE
+                   MOVE 'S'  TO WS-CA-CHAVE-FIM-DADOS
+               END-IF
+           END-IF.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       6000-READ-ARQUIVO-NEXT.
+
+               EXEC CICS  IGNORE CONDITION
+                   ENDFILE
+               END-EXEC.
+
+               EXEC CICS
+                   READNEXT FILE('BASEPOS')
+                   INTO(DADOS-ARQUIVO)
+                   RIDFLD(ARQ-CODIGO)
+               END-EXEC.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       6000-READ-ARQUIVO-PREV.
+
+               EXEC CICS  IGNORE CONDITION
+                   ENDFILE
+               END-EXEC.
+
+               EXEC CICS
+                   READPREV FILE('BASEPOS')
+                   INTO(DADOS-ARQUIVO)
+                   RIDFLD(ARQ-CODIGO)
+               END-EXEC.
+           EXIT.
+      *****************************************************************
+      *
+      *****************************************************************
+       7000-RETORNA-MENU.
+
+              EXEC CICS XCTL
+                   PROGRAM('PGMMENU')
+              END-EXEC.
+           EXIT.
+      *****************************************************************
+      *  FIM DO PROGRAMA
+      *****************************************************************
