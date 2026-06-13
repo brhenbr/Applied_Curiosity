@@ -23,7 +23,7 @@ NeoSmith/
 
 ## 3. Quick Start & Deployment
 
-To deploy NeoSmith, follow the formal instructions provided in the **[Deployment Runbook](https://www.google.com/search?q=Design_Documents/Runbook.pdf)**.
+To deploy NeoSmith, follow the formal instructions provided in the **[Deployment Runbook](https://github.com/brhenbr/Applied_Curiosity/blob/main/03_AI-Products/Agents/NeoSmith/Design_Documents/NeoSmith%20AI%20Agent%20-%20Deployment%20Runbook.pdf)**.
 
 ### Summary of Workflow:
 
@@ -53,4 +53,3 @@ For a deep dive into the architecture and validation suites, refer to the docume
 
 *NeoSmith was engineered for those looking for a different way to lead. Are you ready to see the truth of your organization?*
 
-```
