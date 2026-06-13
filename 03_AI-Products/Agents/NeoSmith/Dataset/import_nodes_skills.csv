@@ -1,0 +1,52 @@
+id,skill_name,category
+SKILL_BEC9DED8,Python,IT
+SKILL_80631C9A,Cloud Infrastructure (AWS/GCP),IT
+SKILL_B5F84134,Cybersecurity,IT
+SKILL_E5CAD5B9,System Architecture,IT
+SKILL_89548964,API Development,IT
+SKILL_EC028BB8,EV Powertrain Engineering,Engineering
+SKILL_F20C5F42,CAD Component Design,Engineering
+SKILL_B953923E,Vehicle Dynamics Simulation,Engineering
+SKILL_0D350D51,Robotics,Engineering
+SKILL_8CA47A63,Lean Manufacturing & Kaizen,Operations
+SKILL_A7242F77,Six Sigma,Operations
+SKILL_DEFE2D29,Supply Chain Optimization,Operations
+SKILL_DB127C6F,Quality Assurance,Operations
+SKILL_AE8F6BBD,B2B Negotiation,Sales
+SKILL_5CA78BBD,CRM Management,Sales
+SKILL_60C996F5,Sales Forecasting,Sales
+SKILL_5A98FC10,Lead Generation,Sales
+SKILL_DD1DDE98,Financial Modeling,Finance
+SKILL_3F2CD78C,Risk Analysis,Finance
+SKILL_D3D6E857,Corporate Taxation,Finance
+SKILL_69F85FF1,Asset Management,Finance
+SKILL_77B1E8EC,Growth Hacking,Marketing
+SKILL_697651E3,SEO/SEM,Marketing
+SKILL_CBFF6FA1,Brand Strategy,Marketing
+SKILL_087054E4,Content Marketing,Marketing
+SKILL_E9A11C18,Talent Acquisition,People
+SKILL_86F015E1,Organizational Development,People
+SKILL_78DE6041,Conflict Resolution,People
+SKILL_13438B99,HR Analytics,People
+SKILL_289D13F1,Rapid Prototyping,R&D
+SKILL_4FB85B92,Innovation Strategy,R&D
+SKILL_B181DCC5,Material Science,R&D
+SKILL_75A423DB,Data Modeling,R&D
+SKILL_B8633877,Regulatory Compliance,Risk & Compliance
+SKILL_527A882E,Internal Auditing,Risk & Compliance
+SKILL_C0F7BDF5,Fraud Detection,Risk & Compliance
+SKILL_721D2429,Data Privacy,Risk & Compliance
+SKILL_0837B786,Fleet Management,Logistics
+SKILL_87453C7C,Inventory Control,Logistics
+SKILL_517CD5F2,Warehouse Operations,Logistics
+SKILL_95EEF0F1,Route Optimization,Logistics
+SKILL_83C13EAB,Data Analysis (SQL/BI),Hybrid
+SKILL_71F7A49B,Agile/Scrum,Hybrid
+SKILL_CC9AD54B,Project Management,Hybrid
+SKILL_F31AC2D4,Business Strategy,Hybrid
+SKILL_2F487A99,Design Thinking,Hybrid
+SKILL_DDB6691A,Emotional Intelligence,Soft_Skills
+SKILL_288BC984,Critical Thinking,Soft_Skills
+SKILL_CBC99400,Complex Problem Solving,Soft_Skills
+SKILL_880761C0,Adaptability,Soft_Skills
+SKILL_855A73EC,Public Speaking,Soft_Skills

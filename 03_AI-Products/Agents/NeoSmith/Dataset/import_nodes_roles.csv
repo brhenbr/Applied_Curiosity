@@ -1,0 +1,62 @@
+id,title,level
+ROLE_CEO,Chief Executive Officer,C-Level
+ROLE_MARKETING_C_LEVEL,Chief Marketing Officer,C-Level
+ROLE_MARKETING_DIRECTOR,Director of Marketing,Director
+ROLE_MARKETING_MANAGER,Marketing Manager,Manager
+ROLE_MARKETING_SPECIALIST,Marketing Specialist,Specialist
+ROLE_MARKETING_SENIOR,Senior Analyst - Marketing,Senior
+ROLE_MARKETING_JUNIOR,Junior Analyst - Marketing,Junior
+ROLE_SALES_C_LEVEL,Chief Sales Officer,C-Level
+ROLE_SALES_DIRECTOR,Director of Sales,Director
+ROLE_SALES_MANAGER,Sales Manager,Manager
+ROLE_SALES_SPECIALIST,Sales Specialist,Specialist
+ROLE_SALES_SENIOR,Senior Analyst - Sales,Senior
+ROLE_SALES_JUNIOR,Junior Analyst - Sales,Junior
+ROLE_ENGINEERING_C_LEVEL,Chief Engineering Officer,C-Level
+ROLE_ENGINEERING_DIRECTOR,Director of Engineering,Director
+ROLE_ENGINEERING_MANAGER,Engineering Manager,Manager
+ROLE_ENGINEERING_SPECIALIST,Engineering Specialist,Specialist
+ROLE_ENGINEERING_SENIOR,Senior Analyst - Engineering,Senior
+ROLE_ENGINEERING_JUNIOR,Junior Analyst - Engineering,Junior
+ROLE_IT_C_LEVEL,Chief IT Officer,C-Level
+ROLE_IT_DIRECTOR,Director of IT,Director
+ROLE_IT_MANAGER,IT Manager,Manager
+ROLE_IT_SPECIALIST,IT Specialist,Specialist
+ROLE_IT_SENIOR,Senior Analyst - IT,Senior
+ROLE_IT_JUNIOR,Junior Analyst - IT,Junior
+ROLE_RISK & COMPLIANCE_C_LEVEL,Chief Risk & Compliance Officer,C-Level
+ROLE_RISK & COMPLIANCE_DIRECTOR,Director of Risk & Compliance,Director
+ROLE_RISK & COMPLIANCE_MANAGER,Risk & Compliance Manager,Manager
+ROLE_RISK & COMPLIANCE_SPECIALIST,Risk & Compliance Specialist,Specialist
+ROLE_RISK & COMPLIANCE_SENIOR,Senior Analyst - Risk & Compliance,Senior
+ROLE_RISK & COMPLIANCE_JUNIOR,Junior Analyst - Risk & Compliance,Junior
+ROLE_FINANCE_C_LEVEL,Chief Finance Officer,C-Level
+ROLE_FINANCE_DIRECTOR,Director of Finance,Director
+ROLE_FINANCE_MANAGER,Finance Manager,Manager
+ROLE_FINANCE_SPECIALIST,Finance Specialist,Specialist
+ROLE_FINANCE_SENIOR,Senior Analyst - Finance,Senior
+ROLE_FINANCE_JUNIOR,Junior Analyst - Finance,Junior
+ROLE_R&D_C_LEVEL,Chief R&D Officer,C-Level
+ROLE_R&D_DIRECTOR,Director of R&D,Director
+ROLE_R&D_MANAGER,R&D Manager,Manager
+ROLE_R&D_SPECIALIST,R&D Specialist,Specialist
+ROLE_R&D_SENIOR,Senior Analyst - R&D,Senior
+ROLE_R&D_JUNIOR,Junior Analyst - R&D,Junior
+ROLE_PEOPLE_C_LEVEL,Chief People Officer,C-Level
+ROLE_PEOPLE_DIRECTOR,Director of People,Director
+ROLE_PEOPLE_MANAGER,People Manager,Manager
+ROLE_PEOPLE_SPECIALIST,People Specialist,Specialist
+ROLE_PEOPLE_SENIOR,Senior Analyst - People,Senior
+ROLE_PEOPLE_JUNIOR,Junior Analyst - People,Junior
+ROLE_OPERATIONS_C_LEVEL,Chief Operations Officer,C-Level
+ROLE_OPERATIONS_DIRECTOR,Director of Operations,Director
+ROLE_OPERATIONS_MANAGER,Operations Manager,Manager
+ROLE_OPERATIONS_SPECIALIST,Operations Specialist,Specialist
+ROLE_OPERATIONS_SENIOR,Senior Analyst - Operations,Senior
+ROLE_OPERATIONS_JUNIOR,Junior Analyst - Operations,Junior
+ROLE_LOGISTICS_C_LEVEL,Chief Logistics Officer,C-Level
+ROLE_LOGISTICS_DIRECTOR,Director of Logistics,Director
+ROLE_LOGISTICS_MANAGER,Logistics Manager,Manager
+ROLE_LOGISTICS_SPECIALIST,Logistics Specialist,Specialist
+ROLE_LOGISTICS_SENIOR,Senior Analyst - Logistics,Senior
+ROLE_LOGISTICS_JUNIOR,Junior Analyst - Logistics,Junior
