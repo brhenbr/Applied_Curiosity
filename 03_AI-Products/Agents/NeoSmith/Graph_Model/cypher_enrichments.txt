@@ -1,0 +1,55 @@
+//Create index for Skill 
+
+CREATE VECTOR INDEX skill_name_embeddings IF NOT EXISTS
+FOR (s:Skill) ON (s.embedding)
+OPTIONS {indexConfig: {
+ `vector.dimensions`: 1536,
+ `vector.similarity_function`: 'cosine'
+}};
+
+//Create Skill embeddings
+
+:param openAiKey => "COLOQUE_SUA_CHAVE_AQUI";
+
+MATCH (s:Skill)
+WHERE s.embedding IS NULL
+WITH collect(s) AS skillNodes
+WITH skillNodes, [skill IN skillNodes | skill.skill_name] AS skillNames
+CALL genai.vector.encodeBatch(skillNames, "OpenAI", {
+  token: $openAiKey,
+  model: "text-embedding-ada-002"
+}) YIELD index, vector
+WITH skillNodes[index] AS targetNode, vector
+SET targetNode.embedding = vector;
+
+
+//Test Skill embeddings
+// Generate a dummy 1536-dimensional array natively
+WITH [1.0] + [i IN range(1, 1535) | 0.0] AS mockVector
+CALL db.index.vector.queryNodes("skill_name_embeddings", 3, mockVector) YIELD node, score
+RETURN node.skill_name AS Skill, node.category AS Category, score;
+
+
+//Create Role index
+
+CREATE VECTOR INDEX role_title_embeddings IF NOT EXISTS
+FOR (r:Role) ON (r.embedding)
+OPTIONS {indexConfig: {
+ `vector.dimensions`: 1536,
+ `vector.similarity_function`: 'cosine'
+}};
+
+//Generate Role embeddings
+
+:param openAiKey => "COLOQUE_SUA_CHAVE_AQUI";
+
+MATCH (r:Role)
+WHERE r.embedding IS NULL
+WITH collect(r) AS roleNodes
+WITH roleNodes, [role IN roleNodes | role.title] AS roleTitles
+CALL genai.vector.encodeBatch(roleTitles, "OpenAI", {
+  token: $openAiKey,
+  model: "text-embedding-ada-002"
+}) YIELD index, vector
+WITH roleNodes[index] AS targetNode, vector
+SET targetNode.embedding = vector;

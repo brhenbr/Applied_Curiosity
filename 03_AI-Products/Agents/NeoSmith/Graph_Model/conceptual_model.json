@@ -1,0 +1,1260 @@
+{
+  "version": "3.0.0",
+  "visualisation": {
+    "nodes": [
+      {
+        "id": "n:1",
+        "position": {
+          "x": 67.54911815898674,
+          "y": -125.5936784013187
+        }
+      },
+      {
+        "id": "n:2",
+        "position": {
+          "x": -124.70212519923986,
+          "y": -4.462074415797968
+        }
+      },
+      {
+        "id": "n:3",
+        "position": {
+          "x": 69.26537945254015,
+          "y": -5.478355949372492
+        }
+      },
+      {
+        "id": "n:4",
+        "position": {
+          "x": -122.78741944070157,
+          "y": -137.24763578475674
+        }
+      }
+    ]
+  },
+  "dataModel": {
+    "version": "3.0.0",
+    "graphSchemaRepresentation": {
+      "version": "1.0.0",
+      "graphSchema": {
+        "nodeLabels": [
+          {
+            "$id": "nl:1",
+            "token": "Employee",
+            "properties": [
+              {
+                "$id": "p:1",
+                "token": "id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:2",
+                "token": "name",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:3",
+                "token": "department",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:4",
+                "token": "influence_score",
+                "type": {
+                  "type": "float"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "nl:2",
+            "token": "Role",
+            "properties": [
+              {
+                "$id": "p:5",
+                "token": "id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:6",
+                "token": "title",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:7",
+                "token": "level",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "nl:3",
+            "token": "Skill",
+            "properties": [
+              {
+                "$id": "p:8",
+                "token": "id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:9",
+                "token": "skill_name",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:10",
+                "token": "category",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "nl:4",
+            "token": "OpenPosition",
+            "properties": [
+              {
+                "$id": "p:11",
+                "token": "id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:12",
+                "token": "department",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:25",
+                "token": "priority",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            ]
+          }
+        ],
+        "relationshipTypes": [
+          {
+            "$id": "rt:1",
+            "token": "HOLDS_ROLE",
+            "properties": [
+              {
+                "$id": "p:13",
+                "token": "employee_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:14",
+                "token": "role_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "rt:2",
+            "token": "HAS_SKILL",
+            "properties": [
+              {
+                "$id": "p:15",
+                "token": "employee_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:16",
+                "token": "skill_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:17",
+                "token": "proficiency",
+                "type": {
+                  "type": "integer"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "rt:5",
+            "token": "FOR_ROLE",
+            "properties": [
+              {
+                "$id": "p:26",
+                "token": "position_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:27",
+                "token": "role_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "rt:3",
+            "token": "REQUIRES_SKILL",
+            "properties": [
+              {
+                "$id": "p:18",
+                "token": "role_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:19",
+                "token": "skill_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "rt:4",
+            "token": "EQUIVALENT_TO",
+            "properties": [
+              {
+                "$id": "p:20",
+                "token": "skill_id_1",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:21",
+                "token": "skill_id_2",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:22",
+                "token": "similarity",
+                "type": {
+                  "type": "float"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:23",
+                "token": "reskill_time_weeks",
+                "type": {
+                  "type": "integer"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "rt:6",
+            "token": "COLLABORATES_WITH",
+            "properties": [
+              {
+                "$id": "p:24",
+                "token": "emp_id_1",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:28",
+                "token": "emp_id_2",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:29",
+                "token": "weight",
+                "type": {
+                  "type": "float"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "rt:7",
+            "token": "REPORTS_TO",
+            "properties": [
+              {
+                "$id": "p:30",
+                "token": "subordinate_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:31",
+                "token": "manager_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            ]
+          },
+          {
+            "$id": "rt:8",
+            "token": "REPORTS_TO",
+            "properties": [
+              {
+                "$id": "p:32",
+                "token": "subordinate_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              {
+                "$id": "p:33",
+                "token": "manager_id",
+                "type": {
+                  "type": "string"
+                },
+                "nullable": true
+              }
+            ]
+          }
+        ],
+        "nodeObjectTypes": [
+          {
+            "$id": "n:1",
+            "labels": [
+              {
+                "$ref": "#nl:1"
+              }
+            ]
+          },
+          {
+            "$id": "n:2",
+            "labels": [
+              {
+                "$ref": "#nl:2"
+              }
+            ]
+          },
+          {
+            "$id": "n:3",
+            "labels": [
+              {
+                "$ref": "#nl:3"
+              }
+            ]
+          },
+          {
+            "$id": "n:4",
+            "labels": [
+              {
+                "$ref": "#nl:4"
+              }
+            ]
+          }
+        ],
+        "relationshipObjectTypes": [
+          {
+            "$id": "r:1",
+            "type": {
+              "$ref": "#rt:1"
+            },
+            "from": {
+              "$ref": "#n:1"
+            },
+            "to": {
+              "$ref": "#n:2"
+            }
+          },
+          {
+            "$id": "r:2",
+            "type": {
+              "$ref": "#rt:2"
+            },
+            "from": {
+              "$ref": "#n:1"
+            },
+            "to": {
+              "$ref": "#n:3"
+            }
+          },
+          {
+            "$id": "r:5",
+            "type": {
+              "$ref": "#rt:5"
+            },
+            "from": {
+              "$ref": "#n:4"
+            },
+            "to": {
+              "$ref": "#n:2"
+            }
+          },
+          {
+            "$id": "r:3",
+            "type": {
+              "$ref": "#rt:3"
+            },
+            "from": {
+              "$ref": "#n:2"
+            },
+            "to": {
+              "$ref": "#n:3"
+            }
+          },
+          {
+            "$id": "r:4",
+            "type": {
+              "$ref": "#rt:4"
+            },
+            "from": {
+              "$ref": "#n:3"
+            },
+            "to": {
+              "$ref": "#n:3"
+            }
+          },
+          {
+            "$id": "r:6",
+            "type": {
+              "$ref": "#rt:6"
+            },
+            "from": {
+              "$ref": "#n:1"
+            },
+            "to": {
+              "$ref": "#n:1"
+            }
+          },
+          {
+            "$id": "r:7",
+            "type": {
+              "$ref": "#rt:7"
+            },
+            "from": {
+              "$ref": "#n:1"
+            },
+            "to": {
+              "$ref": "#n:1"
+            }
+          },
+          {
+            "$id": "r:8",
+            "type": {
+              "$ref": "#rt:8"
+            },
+            "from": {
+              "$ref": "#n:4"
+            },
+            "to": {
+              "$ref": "#n:1"
+            }
+          }
+        ],
+        "constraints": [
+          {
+            "$id": "c:1",
+            "name": "id_Employee_key",
+            "constraintType": "key",
+            "entityType": "node",
+            "nodeLabel": {
+              "$ref": "#nl:1"
+            },
+            "properties": [
+              {
+                "$ref": "#p:1"
+              }
+            ]
+          },
+          {
+            "$id": "c:2",
+            "name": "id_Role_key",
+            "constraintType": "key",
+            "entityType": "node",
+            "nodeLabel": {
+              "$ref": "#nl:2"
+            },
+            "properties": [
+              {
+                "$ref": "#p:5"
+              }
+            ]
+          },
+          {
+            "$id": "c:3",
+            "name": "id_Skill_key",
+            "constraintType": "key",
+            "entityType": "node",
+            "nodeLabel": {
+              "$ref": "#nl:3"
+            },
+            "properties": [
+              {
+                "$ref": "#p:8"
+              }
+            ]
+          },
+          {
+            "$id": "c:4",
+            "name": "id_OpenPosition_key",
+            "constraintType": "key",
+            "entityType": "node",
+            "nodeLabel": {
+              "$ref": "#nl:4"
+            },
+            "properties": [
+              {
+                "$ref": "#p:11"
+              }
+            ]
+          }
+        ],
+        "indexes": []
+      }
+    },
+    "graphSchemaExtensionsRepresentation": {
+      "nodeKeyProperties": [
+        {
+          "node": {
+            "$ref": "#n:1"
+          },
+          "keyProperties": [
+            {
+              "$ref": "#p:1"
+            }
+          ]
+        },
+        {
+          "node": {
+            "$ref": "#n:2"
+          },
+          "keyProperties": [
+            {
+              "$ref": "#p:5"
+            }
+          ]
+        },
+        {
+          "node": {
+            "$ref": "#n:3"
+          },
+          "keyProperties": [
+            {
+              "$ref": "#p:8"
+            }
+          ]
+        },
+        {
+          "node": {
+            "$ref": "#n:4"
+          },
+          "keyProperties": [
+            {
+              "$ref": "#p:11"
+            }
+          ]
+        }
+      ],
+      "relationshipKeyProperties": []
+    },
+    "graphMappingRepresentation": {
+      "dataSourceSchema": {
+        "type": "local",
+        "tableSchemas": [
+          {
+            "name": "import_edges_collaborates.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "emp_id_1",
+                "sample": "mr..thomas.white.E0471@neosmith.com",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "emp_id_2",
+                "sample": "laura.owens.E0740@neosmith.com",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "weight",
+                "sample": "0.61",
+                "recommendedType": {
+                  "type": "float"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_edges_equivalent_to.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "skill_id_1",
+                "sample": "SKILL_BEC9DED8",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "skill_id_2",
+                "sample": "SKILL_83C13EAB",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "similarity",
+                "sample": "0.8",
+                "recommendedType": {
+                  "type": "float"
+                }
+              },
+              {
+                "name": "reskill_time_weeks",
+                "sample": "2",
+                "recommendedType": {
+                  "type": "integer"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_edges_has_skill.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "employee_id",
+                "sample": "thomas.anderson.E0001@neosmith.com",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "skill_id",
+                "sample": "SKILL_DDB6691A",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "proficiency",
+                "sample": "5",
+                "recommendedType": {
+                  "type": "integer"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_edges_holds_role.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "employee_id",
+                "sample": "thomas.anderson.E0001@neosmith.com",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "role_id",
+                "sample": "ROLE_CEO",
+                "recommendedType": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_nodes_employees.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "id",
+                "sample": "thomas.anderson.E0001@neosmith.com",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "name",
+                "sample": "Thomas Anderson",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "department",
+                "sample": "Executive",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "influence_score",
+                "sample": "0.95",
+                "recommendedType": {
+                  "type": "float"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_nodes_roles.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "id",
+                "sample": "ROLE_CEO",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "title",
+                "sample": "Chief Executive Officer",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "level",
+                "sample": "C-Level",
+                "recommendedType": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_nodes_skills.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "id",
+                "sample": "SKILL_BEC9DED8",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "skill_name",
+                "sample": "Python",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "category",
+                "sample": "IT",
+                "recommendedType": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_edges_reports_to.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "subordinate_id",
+                "sample": "agent.smith.E0002@neosmith.com",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "manager_id",
+                "sample": "thomas.anderson.E0001@neosmith.com",
+                "recommendedType": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_edges_for_role.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "position_id",
+                "sample": "VAC_0001",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "role_id",
+                "sample": "ROLE_MARKETING_JUNIOR",
+                "recommendedType": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_edges_requires_skill.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "role_id",
+                "sample": "ROLE_CEO",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "skill_id",
+                "sample": "SKILL_DDB6691A",
+                "recommendedType": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          {
+            "name": "import_nodes_open_positions.csv",
+            "expanded": true,
+            "fields": [
+              {
+                "name": "id",
+                "sample": "VAC_0001",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "department",
+                "sample": "Marketing",
+                "recommendedType": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "priority",
+                "sample": "Low",
+                "recommendedType": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "nodeMappings": [
+        {
+          "node": {
+            "$ref": "#n:1"
+          },
+          "tableName": "import_nodes_employees.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "id",
+              "property": {
+                "$ref": "#p:1"
+              }
+            },
+            {
+              "fieldName": "name",
+              "property": {
+                "$ref": "#p:2"
+              }
+            },
+            {
+              "fieldName": "department",
+              "property": {
+                "$ref": "#p:3"
+              }
+            },
+            {
+              "fieldName": "influence_score",
+              "property": {
+                "$ref": "#p:4"
+              }
+            }
+          ]
+        },
+        {
+          "node": {
+            "$ref": "#n:2"
+          },
+          "tableName": "import_nodes_roles.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "id",
+              "property": {
+                "$ref": "#p:5"
+              }
+            },
+            {
+              "fieldName": "title",
+              "property": {
+                "$ref": "#p:6"
+              }
+            },
+            {
+              "fieldName": "level",
+              "property": {
+                "$ref": "#p:7"
+              }
+            }
+          ]
+        },
+        {
+          "node": {
+            "$ref": "#n:3"
+          },
+          "tableName": "import_nodes_skills.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "id",
+              "property": {
+                "$ref": "#p:8"
+              }
+            },
+            {
+              "fieldName": "skill_name",
+              "property": {
+                "$ref": "#p:9"
+              }
+            },
+            {
+              "fieldName": "category",
+              "property": {
+                "$ref": "#p:10"
+              }
+            }
+          ]
+        },
+        {
+          "node": {
+            "$ref": "#n:4"
+          },
+          "tableName": "import_nodes_open_positions.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "id",
+              "property": {
+                "$ref": "#p:11"
+              }
+            },
+            {
+              "fieldName": "department",
+              "property": {
+                "$ref": "#p:12"
+              }
+            },
+            {
+              "fieldName": "priority",
+              "property": {
+                "$ref": "#p:25"
+              }
+            }
+          ]
+        }
+      ],
+      "relationshipMappings": [
+        {
+          "relationship": {
+            "$ref": "#r:1"
+          },
+          "tableName": "import_edges_holds_role.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "employee_id",
+              "property": {
+                "$ref": "#p:13"
+              }
+            },
+            {
+              "fieldName": "role_id",
+              "property": {
+                "$ref": "#p:14"
+              }
+            }
+          ],
+          "fromMappings": {
+            "#p:1": "employee_id"
+          },
+          "toMappings": {
+            "#p:5": "role_id"
+          }
+        },
+        {
+          "relationship": {
+            "$ref": "#r:2"
+          },
+          "tableName": "import_edges_has_skill.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "employee_id",
+              "property": {
+                "$ref": "#p:15"
+              }
+            },
+            {
+              "fieldName": "skill_id",
+              "property": {
+                "$ref": "#p:16"
+              }
+            },
+            {
+              "fieldName": "proficiency",
+              "property": {
+                "$ref": "#p:17"
+              }
+            }
+          ],
+          "fromMappings": {
+            "#p:1": "employee_id"
+          },
+          "toMappings": {
+            "#p:8": "skill_id"
+          }
+        },
+        {
+          "relationship": {
+            "$ref": "#r:5"
+          },
+          "tableName": "import_edges_for_role.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "position_id",
+              "property": {
+                "$ref": "#p:26"
+              }
+            },
+            {
+              "fieldName": "role_id",
+              "property": {
+                "$ref": "#p:27"
+              }
+            }
+          ],
+          "fromMappings": {
+            "#p:11": "position_id"
+          },
+          "toMappings": {
+            "#p:5": "role_id"
+          }
+        },
+        {
+          "relationship": {
+            "$ref": "#r:3"
+          },
+          "tableName": "import_edges_requires_skill.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "role_id",
+              "property": {
+                "$ref": "#p:18"
+              }
+            },
+            {
+              "fieldName": "skill_id",
+              "property": {
+                "$ref": "#p:19"
+              }
+            }
+          ],
+          "fromMappings": {
+            "#p:5": "role_id"
+          },
+          "toMappings": {
+            "#p:8": "skill_id"
+          }
+        },
+        {
+          "relationship": {
+            "$ref": "#r:4"
+          },
+          "tableName": "import_edges_equivalent_to.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "skill_id_1",
+              "property": {
+                "$ref": "#p:20"
+              }
+            },
+            {
+              "fieldName": "skill_id_2",
+              "property": {
+                "$ref": "#p:21"
+              }
+            },
+            {
+              "fieldName": "similarity",
+              "property": {
+                "$ref": "#p:22"
+              }
+            },
+            {
+              "fieldName": "reskill_time_weeks",
+              "property": {
+                "$ref": "#p:23"
+              }
+            }
+          ],
+          "fromMappings": {
+            "#p:8": "skill_id_1"
+          },
+          "toMappings": {
+            "#p:8": "skill_id_2"
+          }
+        },
+        {
+          "relationship": {
+            "$ref": "#r:6"
+          },
+          "tableName": "import_edges_collaborates.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "emp_id_1",
+              "property": {
+                "$ref": "#p:24"
+              }
+            },
+            {
+              "fieldName": "emp_id_2",
+              "property": {
+                "$ref": "#p:28"
+              }
+            },
+            {
+              "fieldName": "weight",
+              "property": {
+                "$ref": "#p:29"
+              }
+            }
+          ],
+          "fromMappings": {
+            "#p:1": "emp_id_1"
+          },
+          "toMappings": {
+            "#p:1": "emp_id_2"
+          }
+        },
+        {
+          "relationship": {
+            "$ref": "#r:7"
+          },
+          "tableName": "import_edges_reports_to.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "subordinate_id",
+              "property": {
+                "$ref": "#p:30"
+              }
+            },
+            {
+              "fieldName": "manager_id",
+              "property": {
+                "$ref": "#p:31"
+              }
+            }
+          ],
+          "fromMappings": {
+            "#p:1": "subordinate_id"
+          },
+          "toMappings": {
+            "#p:1": "manager_id"
+          }
+        },
+        {
+          "relationship": {
+            "$ref": "#r:8"
+          },
+          "tableName": "import_edges_reports_to.csv",
+          "propertyMappings": [
+            {
+              "fieldName": "subordinate_id",
+              "property": {
+                "$ref": "#p:32"
+              }
+            },
+            {
+              "fieldName": "manager_id",
+              "property": {
+                "$ref": "#p:33"
+              }
+            }
+          ],
+          "fromMappings": {
+            "#p:11": "subordinate_id"
+          },
+          "toMappings": {
+            "#p:1": "manager_id"
+          }
+        }
+      ]
+    },
+    "configurations": {
+      "idsToIgnore": [],
+      "arrayDelimiter": "|",
+      "vectorDelimiter": "|"
+    }
+  }
+}
