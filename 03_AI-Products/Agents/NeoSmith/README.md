@@ -1,4 +1,3 @@
-```markdown
 # NeoSmith: Enterprise GraphRAG Organizational Intelligence
 
 > *"Welcome to the real data. I have decoded your organization’s reality. You bring the purpose; I will show you the network."*
