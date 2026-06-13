@@ -1,0 +1,59 @@
+// Queries to check the data in graph after import task
+// Check for disconnected Employees (Missing Role or Manager)
+MATCH (e:Employee)
+WHERE (e.name <> "Thomas Anderson" AND NOT (e)-[:REPORTS_TO]->(:Employee)) 
+   OR NOT (e)-[:HOLDS_ROLE]->(:Role)
+RETURN count(e) AS Orphans_Employees_Count;
+
+
+------------
+
+// Check for disconnected Open Positions (Missing target Profile or Hiring Manager)
+MATCH (op:OpenPosition)
+WHERE NOT (op)-[:REPORTS_TO]->(:Employee) 
+   OR NOT (op)-[:FOR_ROLE]->(:Role)
+RETURN count(op) AS Orphans_Vacancies_Count;
+
+---------------
+
+// Validate ID uniqueness for Employees
+MATCH (e:Employee)
+WITH e.id AS email, count(*) AS cnt
+WHERE cnt > 1
+RETURN email, cnt AS Duplicate_ID_Count;
+
+----------------
+
+// Validate ID uniqueness for Employees
+MATCH (e:Employee)
+WITH e.id AS email, count(*) AS cnt
+WHERE cnt > 1
+RETURN email, cnt AS Duplicate_ID_Count;
+
+---------------
+
+// Check for skills that are completely disconnected from the organization
+MATCH (s:Skill)
+WHERE NOT (:Employee)-[:HAS_SKILL]->(s) OR NOT (:Role)-[:REQUIRES_SKILL]->(s)
+RETURN s.skill_name AS Disconnected_Skill, s.category AS Category;
+
+----------------
+
+// Audit proficiency levels to ensure they match PRD constraints (values 2 to 5)
+MATCH (:Employee)-[h:HAS_SKILL]->(:Skill)
+WHERE h.proficiency < 2 OR h.proficiency > 5
+RETURN count(h) AS Invalid_Proficiency_Edges_Count;
+
+------------------
+
+// Check for active employees who have zero collaboration channels
+MATCH (e:Employee)
+WHERE NOT (e)-[:COLLABORATES_WITH]-()
+RETURN e.name AS Isolated_Employee, e.department AS Department;
+
+-------------------
+
+// Detect self-collaboration loops or illegal ONA weights
+MATCH (e1:Employee)-[c:COLLABORATES_WITH]->(e2:Employee)
+WHERE e1 = e2 OR c.weight < 0.25 OR c.weight > 0.95
+RETURN e1.name AS Employee, c.weight AS Invalid_Weight;
