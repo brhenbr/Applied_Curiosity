@@ -2,6 +2,16 @@
 
 > *"Welcome to the real data. I have decoded your organization’s reality. You bring the purpose; I will show you the network."*
 
+---
+
+### ⚡ **SEE NEO-SMITH IN ACTION**
+**Stop guessing—start seeing the organization's hidden dynamics.** 
+Click below to watch the live demo and witness NeoSmith decoding corporate silos, engineering talent circularity, and solving complex reallocation challenges in real-time.
+
+👉 **[WATCH THE NEO-SMITH LIVE DEMO HERE](https://your-live-demo-link-here)**
+
+---
+
 ## 🚀 See the Truth (Live Validation Logs)
 **Not ready to deploy yet?** See the system in action. We have documented a series of real-world agentic inferences that prove NeoSmith’s ability to decode corporate reality, map silos, and execute talent circularity. 
 👉 **[View the Validation Logs here](https://github.com/brhenbr/Applied_Curiosity/blob/main/03_AI-Products/Agents/NeoSmith/Demo_Logs/NeoSmith%20AI%20Agent%20-%20Demo_log.pdf)** and see the "Matrix code" of the organization without writing a single line of code.
