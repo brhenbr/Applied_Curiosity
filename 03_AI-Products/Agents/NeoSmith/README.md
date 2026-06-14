@@ -4,7 +4,7 @@
 
 ## 🚀 See the Truth (Live Validation Logs)
 **Not ready to deploy yet?** See the system in action. We have documented a series of real-world agentic inferences that prove NeoSmith’s ability to decode corporate reality, map silos, and execute talent circularity. 
-👉 **[View the Validation Logs here]([Validation_Logs/System_Validation_Log.md](https://github.com/brhenbr/Applied_Curiosity/blob/main/03_AI-Products/Agents/NeoSmith/Demo_Logs/NeoSmith%20AI%20Agent%20-%20Demo_log.pdf))** and see the "Matrix code" of the organization without writing a single line of code.
+👉 **[View the Validation Logs here](https://github.com/brhenbr/Applied_Curiosity/blob/main/03_AI-Products/Agents/NeoSmith/Demo_Logs/NeoSmith%20AI%20Agent%20-%20Demo_log.pdf)** and see the "Matrix code" of the organization without writing a single line of code.
 
 ## 1. Project Vision
 **NeoSmith** is an enterprise-grade AI Organizational Intelligence Agent that transcends traditional Human Capital Management (HCM) platforms. By fusing structural graph analytics with human-centric optimization, NeoSmith serves as a **Digital Twin co-pilot** for executive leadership to navigate the complex "matrix" of corporate talent, informal networks, and skill dependencies.
