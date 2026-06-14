@@ -22,7 +22,7 @@ NeoSmith/
 ├── Dataset/             # CSV sources, Python generator, and test scripts
 ├── Graph_model/         # Conceptual model JSON and enrichment Cypher scripts
 ├── Design_Documents/    # PRD, ADR, UAT Playbook, and Deployment Runbook (PDFs)
-└── Validation_Logs/     # Real-world system inference samples
+└── Demo_Logs/           # Real-world system inference samples
 
 ```
 
