@@ -4,11 +4,11 @@
 
 ---
 
-### ⚡ **SEE NEO-SMITH IN ACTION**
+### ⚡ **SEE NEOSMITH IN ACTION**
 **Stop guessing—start seeing the organization's hidden dynamics.** 
 Click below to watch the live demo and witness NeoSmith decoding corporate silos, engineering talent circularity, and solving complex reallocation challenges in real-time.
 
-👉 **[WATCH THE NEO-SMITH LIVE DEMO HERE](https://your-live-demo-link-here)**
+👉 **[WATCH THE NEOSMITH LIVE DEMO HERE](https://www.youtube.com/watch?v=5M6EXpQucoQ)**
 
 ---
 
